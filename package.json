@@ -1,0 +1,22 @@
+{
+  "name": "vergit",
+  "version": "0.1.0",
+  "preferGlobal": true,
+  "description": "",
+  "bin": {
+    "dogit": "./bin/dogit.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:CDTRSFE/dogit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "commander": "^6.2.1",
+    "cosmiconfig": "^7.0.0",
+    "ora": "^5.1.0",
+    "prompts": "^2.4.0"
+  }
+}
