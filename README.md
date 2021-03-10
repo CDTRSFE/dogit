@@ -1,6 +1,6 @@
 # About
 
-dogit is a tool to helper us make a git tag.
+dogit is a tool to helpe us make a git tag with hook.
 
 # install
 
@@ -104,7 +104,7 @@ if type is `cmd`, you shou fill:
 
 - `value` command script.
 
-the command can include follow two parameters which will be replaced by real data
+the command can include follow parameters which will be replaced by real data
 
 - `__TAG__`  tagName `xjzmy-test-v1.0.0`
 - `__VERSION__`  version number `1.0.0`,
