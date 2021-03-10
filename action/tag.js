@@ -3,7 +3,7 @@ const { exec, execSync } = require('child_process');
 const prompts = require('prompts');
 const ora = require('ora');
 const { echo, readConfig } = require('../lib/helper');
-const { isGitRoot, fetchRemote, latestEnvTag, guessNextTag } = require('../lib/git');
+const { isGitRoot, fetchRemote, guessNextTag, allTags } = require('../lib/git');
 const plugin = require('../plugin')
 
 
@@ -33,11 +33,6 @@ module.exports = class Tag {
         return true;
     }
 
-    // 验证输入的Tag号是否正确
-    validateVersion(value) {
-        return !value ? `版本号不能为空` : true
-    }
-
     // 获取交互参数
     async getParams() {
         this.params = await prompts([
@@ -57,14 +52,15 @@ module.exports = class Tag {
         });
 
         this.params.tagPrefix = this.config.envs[this.params.env].prefix
-        await this.showLatestEnvTag()
+        this.envTags = await allTags(this.params.tagPrefix);
+        this.showLatestEnvTag()
 
         const moreParams = await prompts([
             {
                 type: 'text',
                 name: 'version',
                 message: `请输入版本号（推荐 ${guessNextTag(this.prevVersion)}）`,
-                validate: this.validateVersion
+                validate: value => !value ? `描述信息不能为空` : (this.envTags.includes(`${this.params.tagPrefix}${value}`) ? '该版本号已存在' : true)
             },
             {
                 type: 'text',
@@ -104,8 +100,8 @@ module.exports = class Tag {
     }
 
     // 展示最新的环境tag
-    async showLatestEnvTag() {
-        this.prevTag = await latestEnvTag(this.params.tagPrefix);
+    showLatestEnvTag() {
+        this.prevTag = this.envTags[0];
         this.prevVersion = this.prevTag.split(this.params.tagPrefix)[1]
         echo(`${this.params.env} 环境的最近一次Tag为 ${this.prevTag}`);
     }
@@ -161,7 +157,8 @@ module.exports = class Tag {
     // 打Tag
     async addTag() {
         return new Promise(resolve => {
-            exec(`git tag -a ${this.params.tag} -m ${this.params.message}`, (error, stdout, stderr) => {
+            const command = `git tag -a ${this.params.tag} -m "${this.params.message}"`
+            exec(command, (error, stdout, stderr) => {
                 if (error) {
                     echo(stderr, 'info')
                     process.exit();
