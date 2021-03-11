@@ -16,25 +16,25 @@ module.exports = class ReplaceVersionFile {
     }
 
     // 替换内容
-    replaceContent() {
-        const replaceTemplate = this.option.replace.replace(/__TAG__/, this.tag).replace('__ENV__', this.env).replace(/__VERSION__/, this.version);
-      if (this.option.mode === 'regex') {
-          const reg = new RegExp(this.option.match);
-          this.content = this.content.replace(reg, replaceTemplate);
-      } else {
-          this.content = replaceTemplate;
-      }
+    async replaceContent() {
+        const replace = this.option.replace;
+        if (typeof replace === 'function') {
+            this.content = await replace(this.content, this.tag, this.env, this.version);
+        } else {
+            const replaceTemplate = replace.replace(/__TAG__/, this.tag).replace('__ENV__', this.env).replace(/__VERSION__/, this.version);
+            this.content = replaceTemplate;
+        }
     }
 
     // 写入替换文件
-    writeFile() {
+    async writeFile() {
         this.readSouceFile();
-        this.replaceContent();
+        await this.replaceContent();
         fs.writeFileSync(this.sourcePath, this.content);
     }
 
-    start() {
-        this.writeFile();
+    async start() {
+        await this.writeFile();
         return true;
     }
 }
