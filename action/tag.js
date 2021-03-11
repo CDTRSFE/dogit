@@ -150,7 +150,13 @@ module.exports = class Tag {
             }
 
             if (item.type === 'plugin') {
-                await this.excutePlugin(item.value, item.option);
+                let pluginOptions = item.option;
+                if (!Array.isArray(pluginOptions)) {
+                    pluginOptions = [pluginOptions]
+                }
+                for (let option of pluginOptions) {
+                    await this.excutePlugin(item.value, option);
+                }
             }
         }
     }
