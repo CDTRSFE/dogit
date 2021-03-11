@@ -1,0 +1,14 @@
+{
+    "command": "command",
+    "parameter": "parameter",
+    "filepath": "filepath",
+    "action": {
+        "add-tag": "add a tag",
+        "init-config": "init configuration file",
+        "specify-config": "manually specify configuration file"
+    },
+    "tip": {
+        "not-git-root": "current folder is not git root, please run the command after switch to a git folder.",
+        "lost-config": "can't find the config file, please use dogit init to generate a config fileor use -n parameter to specify a config file."
+    }
+}

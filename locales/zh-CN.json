@@ -1,0 +1,14 @@
+{
+    "command": "命令",
+    "parameter": "参数",
+    "filepath": "文件路径",
+    "action": {
+        "add-tag": "打Tag",
+        "init-config": "初始化生成配置文件",
+        "specify-config": "手动指定配置路径",
+    },
+    "tip": {
+        "not-git-root": "当前目录不是Git目录，请切到Git根目录之后再操作",
+        "lost-config": "配置文件未找到，请使用 dogit init 初始化一个配置文件或者用 -n 参数手动指定一个配置文件"
+    }
+}
