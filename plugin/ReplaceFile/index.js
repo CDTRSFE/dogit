@@ -1,12 +1,12 @@
 const fs = require('fs')
 const path = require('path')
+const { echo, replaceVar } = require('../../lib/helper');
 
 module.exports = class ReplaceVersionFile {
-    constructor(option, tag, version, env) {
+    constructor({ option }, handler, params) {
         this.option = option;
-        this.tag = tag;
-        this.version = version;
-        this.env = env;
+        this.params = params;
+        this.handler = handler;
         this.sourcePath = path.resolve(process.cwd(), this.option.path)
     }
 
@@ -19,10 +19,10 @@ module.exports = class ReplaceVersionFile {
     async replaceContent() {
         const replace = this.option.replace;
         if (typeof replace === 'function') {
-            this.content = await replace(this.content, this.tag, this.env, this.version);
-        } else {
-            const replaceTemplate = replace.replace(/__TAG__/, this.tag).replace('__ENV__', this.env).replace(/__VERSION__/, this.version);
-            this.content = replaceTemplate;
+            this.content = await replace(this.content, this.params);
+        }
+        else {
+            this.content = replaceVar(replace, this.params);
         }
     }
 

@@ -129,9 +129,6 @@ we support two plugins now:
 option contains
 
 - `path` dist file path.
-- `mode` how we replace the file, include.
-  - `regex` use regex to find the place that should be replace.
-  - `overwrite` directly replace whole file.
 - `match` needed if mode is regex, tell dogit where should replace.
 - `replace` the replaced data or funciton.
 

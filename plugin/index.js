@@ -1,14 +1,17 @@
-const ReplaceVersionFile = require('./ReplaceVersionFile');
-const AutoCommit = require('./AutoCommit');
+const ReplaceFile = require('./ReplaceFile');
+const GitCommit = require('./GitCommit');
+const AddTag = require('./AddTag');
 
-module.exports = async (name, option, tag, version, env) => {
-    const PluginClass = {
-        ReplaceVersionFile,
-        AutoCommit
-    }[name];
-
-    if (!PluginClass) return null;
-
-    const pluginstance = new PluginClass(option, tag, version, env);
-    return await pluginstance.start();
+module.exports = {
+    async register (flow, handler, params) {
+        const PluginClass = {
+            ReplaceFile,
+            GitCommit,
+            AddTag
+        }[flow.plugin];
+    
+        if (!PluginClass) return null;
+    
+        return new PluginClass(flow, handler, params);
+    }
 }
