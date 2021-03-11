@@ -52,9 +52,7 @@ this option is a key-value map to show the envs for your project.
             "value": "ReplaceVersionFile",
             "option": {
                 "path": "./build/version.js",
-                "mode": "regex",
-                "match": "",
-                "replace": ""
+                "replace": "xx"
             }
         },
         {
@@ -80,9 +78,46 @@ this option is a key-value map to show the envs for your project.
 if type is `plugin`, you shou fill:
 
 - `value` plugin name
-- `option` plugin options
+- `option` plugin options, can be a JSON obejct or Array, Array is a short form
 
+```js
+{
+    "type": "plugin",
+    "value": "ReplaceVersionFile",
+    "option": [
+        {
+            "path": "./build/version.js",
+            "replace": "xx"
+        },
+        {
+            "path": "./public/app.config.js",
+            "replace": "yy"
+        }
+    ]
+}
+```
+is equal 
 
+```js
+[
+    {
+        "type": "plugin",
+        "value": "ReplaceVersionFile",
+        "option": {
+            "path": "./build/version.js",
+            "replace": "xx"
+        }
+    },
+    {
+        "type": "plugin",
+        "value": "ReplaceVersionFile",
+        "option": {
+            "path": "./public/app.config.js",
+            "replace": "yy"
+        }
+    }
+]
+```
 ### plugin
 
 we support two plugins now:
@@ -98,7 +133,53 @@ option contains
   - `regex` use regex to find the place that should be replace.
   - `overwrite` directly replace whole file.
 - `match` needed if mode is regex, tell dogit where should replace.
-- `replace` the replaced data.
+- `replace` the replaced data or funciton.
+
+if `repalce` is a string, this will directly replace whole file with this data.
+
+if `repalce` is a function, we will use the returned data as repalced data. this function can be sync or async
+
+```js
+replace(content, tag, env, version) {
+    //...
+}
+```
+- `content` is the origin content from the file should be replaced.
+- `tag` is the tag name `xjzmy-test-v1.0.0`
+- `version` is the version `1.0.0`
+- `env` is env `test`
+
+for example we want to replace `./build/version.js` and `./public/app.config.js` with different replace format:
+
+
+```js
+{
+    "type": "plugin",
+    "value": "ReplaceVersionFile",
+    "option": [
+        {
+            "path": "./build/version.js",
+            "replace": "module.exports = { version: '__TAG__' }"
+        },
+        {
+            "path": "./public/app.config.js",
+            "replace": (content, tag) => {
+                return content.replace(/(version:\s+)'[\w\.\d-]+'/g, `$1'${tag}'`);
+            }
+        }
+    ]
+}
+```
+
+
+#### AutoCommit
+
+> auto commit the unstash files that before action make.
+
+option contains
+
+- `message` the commit message
+
 
 if type is `cmd`, you shou fill:
 
@@ -109,15 +190,6 @@ the command can include follow parameters which will be replaced by real data
 - `__TAG__`  tagName `xjzmy-test-v1.0.0`
 - `__VERSION__`  version number `1.0.0`,
 - `__ENV__`  env `prod`
-
-
-#### AutoCommit
-
-> auto commit the unstash files that before action make.
-
-option contains
-
-- `message` the commit message
 
 # add tag
 
