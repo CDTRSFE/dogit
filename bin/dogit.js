@@ -2,7 +2,7 @@
 const program = require('commander')
 const Tag = require('../action/tag')
 const Init = require('../action/init')
-
+const Set = require('../action/set')
 program
   .version(require('../package.json').version, '-v, --version', 'output the current version')
   .usage('[命令] [参数]')
@@ -24,4 +24,11 @@ program
       init.start()
   })
 
+program
+  .command('set')
+  .description('用户自定义设置')
+  .action(() => {
+      const set = new Set()
+      set.start()
+  })
 program.parse(process.argv)
