@@ -1,27 +1,42 @@
 const fs = require('fs');
 const path = require('path');
-const { echo,readConfig } = require('../lib/helper');
+const ora = require('ora');
 const prompts = require('prompts');
+const { echo } = require('../lib/helper');
 const langChoise = [
-        { title: '中文', value: 'ZH' },
-        { title: '英文', value: 'EN' },
-]
+    { title: '中文', value: 'ZH-CN' },
+    { title: '英文', value: 'EN' },
+];
+const defaultConfig = {"systemConfig":{"lang":"ZH-CN"}};
 module.exports = class Set {
-    // 先读取dogit init 默认生成的配置
-    // defaultConfigSet 读取的文件字符串转换成json格式
-    readTemplate() {
-        this.defaultConfigSet = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../template/.dogitrc.json'), 'utf-8'));
+    async checkConfigFile() {
+        fs.exists(path.resolve(__dirname, '../config/config.json'), (exists) => {
+            // 如果config文件不存在 先初始化文件，再执行其他操作
+            if(!exists) {
+                const spinner = ora('正在初始化系统配置文件..').start();
+                var fliePath = path.resolve(__dirname, '../config');
+                console.log(fliePath);
+                fs.mkdir(fliePath, (err)=> {
+                    if(!err) {
+                        fs.writeFileSync(path.resolve(process.cwd(), 'config/config.json'),JSON.stringify(defaultConfig));
+                        spinner.succeed('初始化配置文件成功')
+                        this.totalOperation();
+                    }
+                });
+                return;
+            }
+            // config文件存在
+            this.totalOperation();
+        })
     }
-    // 检测配置里是否有systemConfig 这个字段
-    async checkSystemConfig() {
-        if(!this.defaultConfigSet.systemConfig) {
-            echo('配置文件未找到，请使用 dogit init 初始化一个配置文件', 'error');
-            return false;
-        }
+    // 先读取配置文件
+    // defaultConfigSet 读取的文件字符串转换成json格式
+    async readTemplate() {
+        this.defaultConfigSet = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../config/config.json'), 'utf-8'));
     }
     // 修改语言类型
     async modifyLangSet() {
-       this.config = await prompts(
+       this.config = await prompts([
             {
                 type: 'select',
                 name: 'config',
@@ -30,37 +45,51 @@ module.exports = class Set {
                     return { title: item, value: item }
                 }),
                 initial: 0
+            }],
+            {
+                onCancel() {
+                    process.exit();
+                }
             }
         )
+        // 设置语言进行的操作
         if(this.config.config === 'lang') {
-            this.langResponse = await prompts({
+            this.langResponse = await prompts([{
                 type: 'select',
                 name: 'config',
                 message: '请选择所需语言',
                 choices: langChoise,
                 initial: 0
+            }],
+            {
+                onCancel() {
+                    process.exit();
+                }
             })
         }
     }
     // 更改配置文件中的语言
     async changeConfig() {
-        this.defaultConfigSet.systemConfig.lang = this.langResponse.config;
+        if(this.langResponse) {
+            this.defaultConfigSet.systemConfig.lang = this.langResponse.config;
+        }
     }
 
     // 写入配置
     // 写入文件格式为字符串或者buffer
     writeConfig() {
-        fs.writeFileSync(path.resolve(process.cwd(), '.dogitrc.json'),JSON.stringify(this.defaultConfigSet));
+        fs.writeFileSync(path.resolve(process.cwd(), 'config/config.json'),JSON.stringify(this.defaultConfigSet));
     }
-    //启动
-    async start() {
-        this.readTemplate();
-        if (await this.checkSystemConfig()) {
-            process.exit();
-        }
+    // 基本的操作方法
+    async totalOperation() {
+        await this.readTemplate();
         await this.modifyLangSet();
         await this.changeConfig();
         this.writeConfig();
         echo('写入配置文件成功', 'success');
+    }
+    //启动
+    async start() {
+        await this.checkConfigFile();
     }
 }

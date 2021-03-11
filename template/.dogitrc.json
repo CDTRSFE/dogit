@@ -10,12 +10,6 @@
             "prefix": "xjzmy-prod-v"
         }
     },
-    "systemConfig": {
-        "lang": "en",
-        "test": {
-            "test": "test"
-        }
-    },
     "beforeTag": [],
     "afterTag": []
 }
