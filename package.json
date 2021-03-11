@@ -15,7 +15,6 @@
   "dependencies": {
     "colors": "^1.4.0",
     "commander": "^6.2.1",
-    "cosmiconfig": "^7.0.0",
     "ora": "^5.1.0",
     "prompts": "^2.4.0"
   }

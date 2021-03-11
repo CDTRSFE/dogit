@@ -1,4 +1,4 @@
-{
+module.exports = {
     "envs" : {
         "dev": {
             "prefix": "xjzmy-dev-v"

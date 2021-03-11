@@ -6,7 +6,8 @@ const { echo, readConfig } = require('../lib/helper');
 const { isGitRoot, fetchRemote, guessNextTag, allTags } = require('../lib/git');
 const plugin = require('../plugin')
 
-
+const I18 = require('../lib/i18');
+const i18 = new I18();
 module.exports = class Tag {
     constructor(configfile) {
         this.configfile = configfile;
@@ -15,14 +16,14 @@ module.exports = class Tag {
     // 验证环境
     async checkEnv() {
         if (!await isGitRoot()) {
-            echo('当前目录不是Git目录，请切到Git根目录之后再操作', 'error');
+            echo(i18.__('tip.not-git-root'), 'error');
             return false;
         }
 
         this.config = await readConfig(this.configfile);
 
         if (!this.config) {
-            echo('配置文件未找到，请使用 dogit init 初始化一个配置文件或者用 -n 参数手动指定一个配置文件', 'error');
+            echo(i18.__('tip.lost-config'), 'error');
             return false;
         }
 
