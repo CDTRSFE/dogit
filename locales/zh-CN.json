@@ -5,10 +5,30 @@
     "action": {
         "add-tag": "打Tag",
         "init-config": "初始化生成配置文件",
-        "specify-config": "手动指定配置路径",
+        "specify-config": "手动指定配置路径"
     },
     "tip": {
+        "write-success": "写入配置文件成功",
         "not-git-root": "当前目录不是Git目录，请切到Git根目录之后再操作",
-        "lost-config": "配置文件未找到，请使用 dogit init 初始化一个配置文件或者用 -n 参数手动指定一个配置文件"
+        "lost-config": "配置文件未找到，请使用 dogit init 初始化一个配置文件或者用 -n 参数手动指定一个配置文件",
+        "fetch-origin": "正在fetch远程仓库...",
+        "fetch-success": "同步远程仓库成功",
+        "select-env": "请选择要打Tag的环境",
+        "enter-version": "请输入版本号",
+        "recommend": "推荐",
+        "version-already-exists": "该版本号已存在",
+        "version-cannot-empty": "版本号不能为空",
+        "msg-cannot-empty": "描述信息不能为空",
+        "enter-tag-msg": "请输入Tag描述信息",
+        "enter-tag-is": "你即将打的Tag号为",
+        "confirm-exec": " 确定无误开始执行？",
+        "last-tag": "__ENV__ 环境的最近一次Tag为",
+        "excute-hook-start": "开始执行钩子脚本 __CMD__",
+        "excute-hook-error": "执行钩子脚本 __CMD__ 出错",
+        "excute-hook-success": "执行钩子脚本 __CMD__ 成功",
+        "excute-plugin-start": "开始执行钩子插件 __PLUGIN__",
+        "excute-plugin-error": "执行钩子插件 __PLUGIN__ 出错，请检查配置",
+        "excute-plugin-success": "执行钩子插件 __PLUGIN__ 成功",
+        "the-end": "恭喜你成功打好Tag"
     }
 }

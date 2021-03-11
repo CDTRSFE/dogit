@@ -8,7 +8,27 @@
         "specify-config": "manually specify configuration file"
     },
     "tip": {
-        "not-git-root": "current folder is not git root, please run the command after switch to a git folder.",
-        "lost-config": "can't find the config file, please use dogit init to generate a config fileor use -n parameter to specify a config file."
+        "write-success": "Successfully write configuration file.",
+        "not-git-root": "Current folder is not git root, please run the command after switch to a git folder.",
+        "lost-config": "Can't find the config file, please use dogit init to generate a config fileor use -n parameter to specify a config file.",
+        "fetch-origin": "fetch remote origin...",
+        "fetch-success": "Successfully synchronized the remote origin.",
+        "select-env": "Please select the environment where you want to set the Tag.",
+        "enter-version": "Please enter the version number",
+        "recommend": "e.g.",
+        "version-already-exists": "This version number already exists.",
+        "version-cannot-empty": "The version number cannot be empty.",
+        "msg-cannot-empty": "The description information cannot be empty.",
+        "enter-tag-msg": "Please enter Tag description information.",
+        "enter-tag-is": "The tag you want to set is",
+        "confirm-exec": ". Are you sure you want to start execution?",
+        "last-tag": "The last tag of the __ENV__ environment is",
+        "excute-hook-start": "Start to execute the hook script '__CMD__'.",
+        "excute-hook-error": "Error executing hook script '__CMD__'.",
+        "excute-hook-success": "Successfully execute the hook script '__CMD__'.",
+        "excute-plugin-start": "Start to execute the hook plugin __PLUGIN__.",
+        "excute-plugin-error": "Error executing hook plugin __PLUGIN__, please check configuration.",
+        "excute-plugin-success": "Successfully execute the hook plugin __PLUGIN__.",
+        "the-end": "Congratulations on successfully setting the tag."
     }
 }

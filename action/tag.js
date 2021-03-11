@@ -27,9 +27,9 @@ module.exports = class Tag {
             return false;
         }
 
-        const spinner = ora('正在fetch远程仓库..').start();
+        const spinner = ora(i18.__('tip.fetch-origin')).start();
         await fetchRemote()
-        spinner.succeed('同步远程仓库成功');
+        spinner.succeed(i18.__('tip.fetch-success'));
 
         return true;
     }
@@ -40,7 +40,7 @@ module.exports = class Tag {
             {
                 type: 'select',
                 name: 'env',
-                message: '请选择要打Tag的环境',
+                message: i18.__('tip.select-env'),
                 choices: Object.keys(this.config.envs).map(item => {
                     return { title: item, value: item }
                 }),
@@ -60,14 +60,14 @@ module.exports = class Tag {
             {
                 type: 'text',
                 name: 'version',
-                message: `请输入版本号（推荐 ${guessNextTag(this.prevVersion)}）`,
-                validate: value => !value ? `描述信息不能为空` : (this.envTags.includes(`${this.params.tagPrefix}${value}`) ? '该版本号已存在' : true)
+                message: `${i18.__('tip.enter-version')}(${i18.__('tip.recommend')} ${guessNextTag(this.prevVersion)})`,
+                validate: value => !value ? i18.__('tip.version-cannot-empty') : (this.envTags.includes(`${this.params.tagPrefix}${value}`) ? i18.__('tip.version-already-exist') : true)
             },
             {
                 type: 'text',
                 name: 'message',
-                message: '请输入Tag描述信息',
-                validate: value => !value ? `描述信息不能为空` : true
+                message: i18.__('tip.enter-tag-msg'),
+                validate: value => !value ? i18.__('tip.msg-cannot-empty') : true
             }
         ], {
             onCancel() {
@@ -85,7 +85,7 @@ module.exports = class Tag {
             {
                 type: 'toggle',
                 name: 'value',
-                message: `你即将打的Tag号为 ${this.params.tag} 确定无误开始执行？`,
+                message: `${i18.__('tip.enter-tag-is')} ${this.params.tag}${i18.__('tip.confirm-exec')}`,
                 initial: true,
                 active: 'yes',
                 inactive: 'no'
@@ -104,7 +104,7 @@ module.exports = class Tag {
     showLatestEnvTag() {
         this.prevTag = this.envTags[0];
         this.prevVersion = this.prevTag.split(this.params.tagPrefix)[1]
-        echo(`${this.params.env} 环境的最近一次Tag为 ${this.prevTag}`);
+        echo(`${i18.__('tip.last-tag').replace(/__ENV__/, this.params.env)} ${this.prevTag}`);
     }
 
     // 构造钩子脚本
@@ -114,15 +114,15 @@ module.exports = class Tag {
 
     // 执行钩子
     async excuteHook(command) {
-        const spinner = ora(`开始执行钩子脚本 ${command}`).start();
+        const spinner = ora(i18.__('tip.excute-hook-start').replace(/__CMD__/, command)).start();
         return new Promise(resolve => {
             exec(command, (error, stdout, stderr) => {
                 if (error) {
-                    spinner.fail(`执行钩子脚本 ${command} 出错`);
+                    spinner.fail(i18.__('tip.excute-hook-error').replace(/__CMD__/, command));
                     echo(stderr, 'info')
                     process.exit();
                 }
-                spinner.succeed(`执行钩子脚本 ${command} 成功`);
+                spinner.succeed(i18.__('tip.excute-hook-success').replace(/__CMD__/, command));
                 resolve();
             });
         })
@@ -130,12 +130,12 @@ module.exports = class Tag {
 
     // 执行插件
     async excutePlugin(name, option) {
-        const spinner = ora(`开始执行钩子插件 ${name}`).start();
+        const spinner = ora(i18.__('tip.excute-plugin-start').replace(/__PLUGIN__/, name)).start();
         try {
             await plugin(name, option, this.params.tag, this.params.version, this.params.env);
-            spinner.succeed(`执行钩子插件 ${name} 成功`);
+            spinner.succeed(i18.__('tip.excute-plugin-success').replace(/__PLUGIN__/, name));
         } catch (e) {
-            spinner.fail(`执行钩子插件 ${name} 出错，请检查配置`);
+            spinner.fail(i18.__('tip.excute-plugin-error').replace(/__PLUGIN__/, name));
             echo(e.message, 'info')
             process.exit();
         }
@@ -179,6 +179,6 @@ module.exports = class Tag {
         await this.excuteHooks('before');
         await this.addTag();
         await this.excuteHooks('after');
-        echo('恭喜你成功打好Tag', 'success')
+        echo(i18.__('tip.the-end'), 'success')
     }
 }
