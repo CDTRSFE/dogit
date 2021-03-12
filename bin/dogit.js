@@ -3,7 +3,8 @@ const program = require('commander')
 const Init = require('../action/init')
 const I18 = require('../lib/i18');
 const Flow = require('../action/flow');
-
+const ConfigSet = require('../action/config_set')
+const ConfigGet = require('../action/config_get')
 const i18 = new I18();
 
 program
@@ -26,5 +27,19 @@ program
       const init = new Init()
       init.start()
   })
+program
+  .command('set')
+  .description('系统自定义设置')
+  .action(() => {
+      const configset = new ConfigSet()
+      configset.start()
+})
+program
+  .command('get')
+  .description('获取当前系统设置')
+  .action(() => {
+      const configset = new ConfigGet()
+      configset.start()
+})
 
 program.parse(process.argv)
