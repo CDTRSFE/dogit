@@ -133,7 +133,7 @@ The currently supported built-in plugins are
 
 This means that the Changelog generation task should only be performed without the tag in dev .
 
-# 国际化
+# i18n
 
 
 The language of the tool itself can be switched with the following interactive command
