@@ -35,7 +35,7 @@ module.exports = {
                 }
             }
         },
-        "hooks": {
+        "hook": {
             "before": [
                 {
                     "plugin": "ReplaceFile",
@@ -86,7 +86,7 @@ dogit flow
 > 插件本质上就是一段**内置**的脚本，相比shell有着如下特点
 
 - 可传入配置
-- 可执行 `before` 和 `after` 两个 hook（子flow）
+- 可执行自己的hook
 - 可接收上级flow的参数
 - 可暴露参数给下级flow
 
