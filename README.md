@@ -72,13 +72,11 @@ module.exports = {
 
 
 # Process
-接下来可以开始执行自己的流程
 Then you can  begin to execute your own process with:
 ```bash
 dogit flow
 ```
 This command will read the configuration file  and starts the task. As you can see from the configuration file, `flow` represents the tasks what we need to execute, and contains two types of flows
-该命令会读取上面的配置文件开始执行里面的任务。从配置文件可以看到，`flow` 就代表了我们需要执行的任务流，包含两种类型的flow:
 
 - Shell scripts
 - Plugin
@@ -87,7 +85,6 @@ This command will read the configuration file  and starts the task. As you can s
 
 ## Shell scripts
 
-相信大家都不陌生，这就是一段能在终端中执行的脚本，格式为
 I believe everyone is familiar with shell scripts, like this:
 ```js
 {
@@ -134,7 +131,6 @@ The currently supported built-in plugins are
 }
 ```
 
-上面就表示只要在非dev的Tag下才执行生成changelog的任务。
 This means that the Changelog generation task should only be performed without the tag in dev .
 
 # 国际化
