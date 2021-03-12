@@ -16,7 +16,7 @@
         <img src="https://img.shields.io/npm/l/dogit.svg" alt="License">
     </a>
 </p>
-
+Read this in other language : English | [简体中文](./README.zh.md)
 
 #   Install
 
@@ -88,7 +88,7 @@ This command will read the configuration file  and starts the task. As you can s
 I believe everyone is familiar with shell scripts, like this:
 ```js
 {
-  "command": "命令"
+  "command": "command"
 }
 ```
 
@@ -105,10 +105,10 @@ And in a different format than the shell
 
 ```js
 {
-  "plugin": "AddTag", // 插件名 必填
-  "option": {}, // 插件参数 可选
-  "hook": {}, // 插件支持的hook（子flow） 可选
-  "when": params => {} // 执行该插件的前提条件 可选
+  "plugin": "AddTag", // Name of Plugin required
+  "option": {}, // Plugin parameters optional  
+  "hook": {}, // Hooks supported by the plugin (subflow) optional 
+  "when": params => {} // Prerequisites for executing the plugin optional 
 }
 ```
 The currently supported built-in plugins are
