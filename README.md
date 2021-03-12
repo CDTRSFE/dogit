@@ -16,7 +16,8 @@
         <img src="https://img.shields.io/npm/l/dogit.svg" alt="License">
     </a>
 </p>
-Read this in other language : English | [简体中文](./README.zh.md)
+
+Read this in other language : English | [简体中文](./README.zh.md) 
 
 #   Install
 
