@@ -1,6 +1,22 @@
-# 关于
+<h1 align="center">dogit</h1>
 
-**dogit** 是一个用来实现开发和发布流程的工具，可自由配置命令和插件。
+<p align="center">一个用来实现开发和发布流程的工具，可自由配置命令和插件。</p>
+
+<p align="center">
+    <a href="https://www.npmjs.com/package/dogit">
+        <img src="https://img.shields.io/npm/v/dogit.svg" />
+    </a>
+    <a href="https://www.npmjs.com/package/dogit">
+        <img src="https://img.shields.io/npm/dt/dogit.svg" >
+    </a>
+    <a href="https://www.npmjs.com/package/dogit">
+        <img src="https://img.shields.io/npm/dm/dogit.svg" alt="Downloads">
+    </a>
+    <a href="https://github.com/CDTRSFE/dogit/blob/master/LICENSE.md">
+        <img src="https://img.shields.io/npm/l/dogit.svg" alt="License">
+    </a>
+</p>
+
 
 # 安装
 
