@@ -2,10 +2,9 @@ const { exec, execSync } = require('child_process');
 const { echo, replaceVar } = require('../../lib/helper');
 
 module.exports = class AutoCommit {
-    constructor({ option, before, after }, handler, params) {
+    constructor({ option,hook }, handler, params) {
         this.option = option;
-        this.beforeHook = before;
-        this.afterHook = after;
+        this.hook = hook;
         this.handler = handler;
         this.params = params;
     }
@@ -20,14 +19,15 @@ module.exports = class AutoCommit {
 
     async start() {
         const message = await this.formatMessage();
-        await this.handler(this.beforeHook, {
+        await this.handler(this.hook.before, {
             message: message
         });
         execSync(`git add .`);
         execSync(`git commit -m "${message}"`);
-        await this.handler(this.afterHook, {
+        await this.handler(this.hook.after, {
             message: message
         });
+        echo('commit 成功，接下来你可以 push 到远端', 'info');
         return true;
     }
 }

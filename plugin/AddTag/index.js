@@ -9,10 +9,9 @@ const I18 = require('../../lib/i18');
 const i18 = new I18();
 
 module.exports = class AddTag {
-    constructor({ option, before, after }, handler) {
+    constructor({ option, hook }, handler) {
         this.option = option;
-        this.beforeHook = before;
-        this.afterHook = after;
+        this.hook = hook;
         this.handler = handler;
     }
 
@@ -124,8 +123,8 @@ module.exports = class AddTag {
             process.exit();
         }
         await this.getParams();
-        await this.handler(this.beforeHook, this.params);
+        await this.handler(this.hook.before, this.params);
         await this.addTag();
-        await this.handler(this.afterHook, this.params);
+        await this.handler(this.hook.after, this.params);
     }
 }

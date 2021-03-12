@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 const program = require('commander')
-const Tag = require('../action/tag')
 const Init = require('../action/init')
 const I18 = require('../lib/i18');
 const Flow = require('../action/flow');

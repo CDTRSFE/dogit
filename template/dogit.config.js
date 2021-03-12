@@ -14,8 +14,7 @@ module.exports = {
                 }
             }
         },
-        "before": [],
-        "after": []
+        "hook": {}
     }
   }
   

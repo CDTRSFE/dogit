@@ -35,20 +35,22 @@ module.exports = {
                 }
             }
         },
-        "before": [
-            {
-                "plugin": "ReplaceFile",
-                "option": {
-                  "path": "./build/version.js",
-                  "replace": "module.exports = { version: '__$tag__' }"
+        "hooks": {
+            "before": [
+                {
+                    "plugin": "ReplaceFile",
+                    "option": {
+                    "path": "./build/version.js",
+                    "replace": "module.exports = { version: '__$tag__' }"
+                    }
                 }
-            }
-        ],
-        "after": [
-            {
-              "command": "npm run changelog:__$env__"
-            }
-        ]
+            ],
+            "after": [
+                {
+                "command": "npm run changelog:__$env__"
+                }
+            ]
+        }
     }
 }
 ```
@@ -93,15 +95,12 @@ dogit flow
 
 ```js
 {
-  "plugin": "AddTag",
-  "option": {},
-  "before": [],
-  "after": [],
-  "when": params => {}
+  "plugin": "AddTag", // 插件名 必填
+  "option": {}, // 插件参数 可选
+  "hook": {}, // 插件支持的hook（子flow） 可选
+  "when": params => {} // 执行该插件的前提条件 可选
 }
 ```
-
-> 注意这里的 before 和 after 既可以是对象（单个flow）也可以是数组（一组子flow）
 
 目前支持的内置插件有
 
@@ -110,7 +109,7 @@ dogit flow
 - [GitCommit](./plugin/GitCommit) Git Commit 提交
 
 
-> 具体某个插件如何使用请移步到插件目录中查看文档
+> 具体某个插件支持的hook和option请移步到插件目录中查看文档
 
 
 `when` 参数表示当前flow在满足哪些条件下才执行

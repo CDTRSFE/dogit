@@ -1,8 +1,8 @@
-const { echo, readConfig } = require('../lib/helper');
-const plugin = require('../plugin');
+const { echo, readConfig } = require('../../lib/helper');
+const plugin = require('../../plugin');
 const prompts = require('prompts');
 const ora = require('ora');
-const Flows = require('../lib/flows');
+const FlowLib = require('./flow');
 
 module.exports = class Flow {
     constructor(configfile) {
@@ -12,8 +12,8 @@ module.exports = class Flow {
     // 开始
     async start() {
         const config = await readConfig(this.configfile);
-        const flows = new Flows(config.flow)
-        await flows.start()
+        const flow = new FlowLib(config.flow)
+        await flow.start()
         echo('恭喜你成功完成全部流程', 'success')
     }
 
