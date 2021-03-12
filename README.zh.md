@@ -21,6 +21,37 @@
     </a>
 </p>
 
+# 场景
+
+通常我们会以Tag来部署项目，而在打Tag之前我们需要做一些事，比如自动生成changelog、替换版本号（前端项目可在部署后打印到控制台）
+
+**`我们需要前置任务生成的changelog是在打Tag之前完成并提交的，这样每个Tag指向的代码才能包含正确的changelog文件`**
+
+
+所以我们不得不执行一系列命令
+
+```
+npm run changelog
+node version.js --verion "xjzmy-test-v1.0.0"
+git commit -m '生成changelog和修改版本号'
+git tag -a 'xjzmy-test-v1.0.0' -m 'tag信息'
+```
+
+如此很繁琐且容易出错，如果可以通过配置的方式自动完成打Tag之前的所有操作那岂不是很方便吗？dogit 就是做这个事的。
+
+> 所以本质上我们需要的是一个流程控制，但注意这里并非简单地从上到下执行，重点在于我们需要提前拿到Tag去执行之前的操作，因此dogit采用了hook的形式，可传递参数到子流程中
+
+因此使用 dogit 之后就变成了
+
+```
+- 开始执行打Tag任务
+- 交互式接收用户输入的Tag号等信息
+- 调用 before hook 并传入Tag号等参数到替换版本号的插件中
+- 调用 before hook 并传入Tag号等参数到自动生成changelog的插件中
+- git commit 上述被修改的文件
+- 正式打Tag
+- 完成任务
+```
 
 # 安装
 
