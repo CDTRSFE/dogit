@@ -97,9 +97,13 @@ module.exports = class AddTag {
 
     // 展示最新的环境tag
     showLatestEnvTag() {
-        this.prevTag = this.envTags[0];
-        this.prevVersion = this.prevTag.split(this.params.tagPrefix)[1]
-        echo(`${this.params.env} 环境的最近一次Tag为 ${this.prevTag}`);
+        this.prevTag = this.envTags[0] || '';
+        this.prevVersion = this.prevTag.split(this.params.tagPrefix)[1];
+        if (this.prevTag) {
+            echo(`${this.params.env} 环境的最近一次Tag为 ${this.prevTag}`);
+        } else {
+            echo(`${this.params.env} 尚未打过Tag`);
+        }
     }
 
     // 打Tag
