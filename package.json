@@ -1,6 +1,6 @@
 {
   "name": "dogit",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "preferGlobal": true,
   "description": "",
   "bin": {
@@ -11,7 +11,7 @@
     "url": "git@github.com:CDTRSFE/dogit.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "colors": "^1.4.0",
     "commander": "^6.2.1",

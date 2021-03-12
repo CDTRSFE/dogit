@@ -1,9 +1,10 @@
 #! /usr/bin/env node
 const program = require('commander')
-const Tag = require('../action/tag')
 const Init = require('../action/init')
 const I18 = require('../lib/i18');
-
+const Flow = require('../action/flow');
+const ConfigSet = require('../action/config_set')
+const ConfigGet = require('../action/config_get')
 const i18 = new I18();
 
 program
@@ -11,12 +12,12 @@ program
   .usage(`[${i18.__('command')}] [${i18.__('parameter')}]`)
 
 program
-  .command('tag')
-  .description(i18.__('action.add-tag'))
+  .command('flow')
+  .description('流程')
   .option(`-n, --config <${i18.__('filepath')}>, ${i18.__('action.specify-config')}`)
   .action(({ config }) => {
-      const tag = new Tag(config)
-      tag.start()
+      const flow = new Flow(config)
+      flow.start()
   })
 
 program
@@ -26,5 +27,19 @@ program
       const init = new Init()
       init.start()
   })
+program
+  .command('set')
+  .description('系统自定义设置')
+  .action(() => {
+      const configset = new ConfigSet()
+      configset.start()
+})
+program
+  .command('get')
+  .description('获取当前系统设置')
+  .action(() => {
+      const configset = new ConfigGet()
+      configset.start()
+})
 
 program.parse(process.argv)

@@ -2,28 +2,23 @@ const fs = require('fs');
 const { exec, execSync } = require('child_process');
 const prompts = require('prompts');
 const ora = require('ora');
-const { echo, readConfig } = require('../lib/helper');
-const { isGitRoot, fetchRemote, guessNextTag, allTags } = require('../lib/git');
-const plugin = require('../plugin')
+const { echo } = require('../../lib/helper');
+const { isGitRoot, fetchRemote, guessNextTag, allTags } = require('../../lib/git');
 
-const I18 = require('../lib/i18');
+const I18 = require('../../lib/i18');
 const i18 = new I18();
-module.exports = class Tag {
-    constructor(configfile) {
-        this.configfile = configfile;
+
+module.exports = class AddTag {
+    constructor({ option, hook }, handler) {
+        this.option = option;
+        this.hook = hook;
+        this.handler = handler;
     }
 
     // 验证环境
     async checkEnv() {
         if (!await isGitRoot()) {
             echo(i18.__('tip.not-git-root'), 'error');
-            return false;
-        }
-
-        this.config = await readConfig(this.configfile);
-
-        if (!this.config) {
-            echo(i18.__('tip.lost-config'), 'error');
             return false;
         }
 
@@ -41,7 +36,7 @@ module.exports = class Tag {
                 type: 'select',
                 name: 'env',
                 message: i18.__('tip.select-env'),
-                choices: Object.keys(this.config.envs).map(item => {
+                choices: Object.keys(this.option.envs).map(item => {
                     return { title: item, value: item }
                 }),
                 initial: 0
@@ -52,7 +47,7 @@ module.exports = class Tag {
             }
         });
 
-        this.params.tagPrefix = this.config.envs[this.params.env].prefix
+        this.params.tagPrefix = this.option.envs[this.params.env].prefix
         this.envTags = await allTags(this.params.tagPrefix);
         this.showLatestEnvTag()
 
@@ -102,56 +97,12 @@ module.exports = class Tag {
 
     // 展示最新的环境tag
     showLatestEnvTag() {
-        this.prevTag = this.envTags[0];
-        this.prevVersion = this.prevTag.split(this.params.tagPrefix)[1]
-        echo(`${i18.__('tip.last-tag').replace(/__ENV__/, this.params.env)} ${this.prevTag}`);
-    }
-
-    // 构造钩子脚本
-    formatHookCommand(command) {
-        return command.replace(/__VERSION__/,`'${this.params.version}'`).replace(/__TAG__/,`'${this.params.tag}'`).replace('__ENV__', this.params.env);
-    }
-
-    // 执行钩子
-    async excuteHook(command) {
-        const spinner = ora(i18.__('tip.excute-hook-start').replace(/__CMD__/, command)).start();
-        return new Promise(resolve => {
-            exec(command, (error, stdout, stderr) => {
-                if (error) {
-                    spinner.fail(i18.__('tip.excute-hook-error').replace(/__CMD__/, command));
-                    echo(stderr, 'info')
-                    process.exit();
-                }
-                spinner.succeed(i18.__('tip.excute-hook-success').replace(/__CMD__/, command));
-                resolve();
-            });
-        })
-    }
-
-    // 执行插件
-    async excutePlugin(name, option) {
-        const spinner = ora(i18.__('tip.excute-plugin-start').replace(/__PLUGIN__/, name)).start();
-        try {
-            await plugin(name, option, this.params.tag, this.params.version, this.params.env);
-            spinner.succeed(i18.__('tip.excute-plugin-success').replace(/__PLUGIN__/, name));
-        } catch (e) {
-            spinner.fail(i18.__('tip.excute-plugin-error').replace(/__PLUGIN__/, name));
-            echo(e.message, 'info')
-            process.exit();
-        }
-    }
-
-    async excuteHooks(type) {
-        const commands = this.config[`${type}Tag`] || [];
-        for (let item of commands) {
-            if (item.type === 'cmd') {
-                const command = this.formatHookCommand(item.value);
-                await this.excuteHook(command);
-            }
-
-            if (item.type === 'plugin') {
-                await this.excutePlugin(item.value, item.option);
-            }
+        this.prevTag = this.envTags[0] || '';
+        this.prevVersion = this.prevTag.split(this.params.tagPrefix)[1];
+        if (this.prevTag) {
+            echo(`${i18.__('tip.last-tag').replace(/__ENV__/, this.params.env)} ${this.prevTag}`);
+        } else {
+            echo(`${this.params.env} 尚未打过Tag`);
         }
     }
 
@@ -176,9 +127,8 @@ module.exports = class Tag {
             process.exit();
         }
         await this.getParams();
-        await this.excuteHooks('before');
+        await this.handler(this.hook.before, this.params);
         await this.addTag();
-        await this.excuteHooks('after');
-        echo(i18.__('tip.the-end'), 'success')
+        await this.handler(this.hook.after, this.params);
     }
 }

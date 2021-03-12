@@ -1,14 +1,20 @@
-const ReplaceVersionFile = require('./ReplaceVersionFile');
-const AutoCommit = require('./AutoCommit');
+const ReplaceFile = require('./ReplaceFile');
+const GitCommit = require('./GitCommit');
+const AddTag = require('./AddTag');
 
-module.exports = async (name, option, tag, version, env) => {
-    const PluginClass = {
-        ReplaceVersionFile,
-        AutoCommit
-    }[name];
+module.exports = {
+    async register(task, handler, params) {
+        const PluginClass = {
+            ReplaceFile,
+            GitCommit,
+            AddTag
+        }[task.plugin];
+    
+        if (!PluginClass) return null;
 
-    if (!PluginClass) return null;
-
-    const pluginstance = new PluginClass(option, tag, version, env);
-    return await pluginstance.start();
+        // 处理参数
+        task.hook = task.hook || {};
+    
+        return new PluginClass(task, handler, params);
+    }
 }
