@@ -1,3 +1,7 @@
+<p align="center">
+    <img width="100" src="./logo.svg">
+</p>
+
 <h1 align="center">dogit</h1>
 
 <p align="center">一个用来实现开发和发布流程的工具，可自由配置命令和插件。</p>
@@ -12,7 +16,7 @@
     <a href="https://www.npmjs.com/package/dogit">
         <img src="https://img.shields.io/npm/dm/dogit.svg" alt="Downloads">
     </a>
-    <a href="https://github.com/CDTRSFE/dogit/blob/master/LICENSE.md">
+    <a href="https://github.com/CDTRSFE/dogit/blob/master/LICENSE">
         <img src="https://img.shields.io/npm/l/dogit.svg" alt="License">
     </a>
 </p>

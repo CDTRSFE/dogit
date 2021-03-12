@@ -1,4 +1,9 @@
+<p align="center">
+    <img width="100" src="./logo.svg">
+</p>
+
 <h1 align="center">dogit</h1>
+
 
 <p align="center">A tool used to implement the development and release process, with freely configurable commands and plugins.</p>
 
@@ -12,7 +17,7 @@
     <a href="https://www.npmjs.com/package/dogit">
         <img src="https://img.shields.io/npm/dm/dogit.svg" alt="Downloads">
     </a>
-    <a href="https://github.com/CDTRSFE/dogit/blob/master/LICENSE.md">
+    <a href="https://github.com/CDTRSFE/dogit/blob/master/LICENSE">
         <img src="https://img.shields.io/npm/l/dogit.svg" alt="License">
     </a>
 </p>
