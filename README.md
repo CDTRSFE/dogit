@@ -1,198 +1,144 @@
-# About
+<h1 align="center">dogit</h1>
 
-dogit is a tool to helpe us make a git tag with hook.
+<p align="center">A tool used to implement the development and release process, with freely configurable commands and plugins.</p>
 
-# install
+<p align="center">
+    <a href="https://www.npmjs.com/package/dogit">
+        <img src="https://img.shields.io/npm/v/dogit.svg" />
+    </a>
+    <a href="https://www.npmjs.com/package/dogit">
+        <img src="https://img.shields.io/npm/dt/dogit.svg" >
+    </a>
+    <a href="https://www.npmjs.com/package/dogit">
+        <img src="https://img.shields.io/npm/dm/dogit.svg" alt="Downloads">
+    </a>
+    <a href="https://github.com/CDTRSFE/dogit/blob/master/LICENSE.md">
+        <img src="https://img.shields.io/npm/l/dogit.svg" alt="License">
+    </a>
+</p>
+
+Read this in other language : English | [简体中文](./README.zh.md) 
+
+#   Install
 
 ```bash
 npm install -g dogit
 ```
 
-# init
+# Init
 
-if you fist use dogit, you should run follow commad to get a cofiguation file
+If you are using DOGIT for the first time in a project, run the following command to initialize.
 
 ```bash
 dogit init
 ```
-this file is like 
-
-```json
-{
-    "envs" : {
-        "dev": {
-            "prefix": "xjzmy-dev-v"
-        },
-        "test": {
-            "prefix": "xjzmy-test-v"
-        },
-        "prod": {
-            "prefix": "xjzmy-prod-v"
-        }
-    },
-    "beforeTag": [],
-    "afterTag": []
-}
-```
-### envs
-
-this option is a key-value map to show the envs for your project.
-
-- `prefix` is the tag prefix. can format at `<project name>-<env>-v`.
-
-### hooks
-
-`beforeTag` and `afterTag` is two hooks actions that run before and after add tag. for example
-
-```json
-{
-  "beforeTag": [
-      {
-            "type": "plugin",
-            "value": "ReplaceVersionFile",
-            "option": {
-                "path": "./build/version.js",
-                "replace": "xx"
-            }
-        },
-        {
-            "type": "cmd",
-            "value": "npm run changelog"
-        },
-        {
-            "type": "plugin",
-            "value": "AutoCommit",
-            "option": {
-                "message": "docs: generate changelog and change version file"
-            }
-        }
-  ]
-}
-```
-
-`type` indicate what the hook is, now support:
-
-- `plugin` gogit own plugin
-- `cmd` your custom shell command
-
-if type is `plugin`, you shou fill:
-
-- `value` plugin name
-- `option` plugin options, can be a JSON obejct or Array, Array is a short form
+Then you get a configuration file called`dogit.config.js`. It looks something like this:
 
 ```js
-{
-    "type": "plugin",
-    "value": "ReplaceVersionFile",
-    "option": [
-        {
-            "path": "./build/version.js",
-            "replace": "xx"
+module.exports = {
+    "flow": {
+        "plugin": "AddTag",
+        "option": {
+            "envs" : {
+                "dev": {
+                    "prefix": "xjzmy-dev-v"
+                },
+                "test": {
+                    "prefix": "xjzmy-test-v"
+                },
+                "prod": {
+                    "prefix": "xjzmy-prod-v"
+                }
+            }
         },
-        {
-            "path": "./public/app.config.js",
-            "replace": "yy"
-        }
-    ]
-}
-```
-is equal 
-
-```js
-[
-    {
-        "type": "plugin",
-        "value": "ReplaceVersionFile",
-        "option": {
-            "path": "./build/version.js",
-            "replace": "xx"
-        }
-    },
-    {
-        "type": "plugin",
-        "value": "ReplaceVersionFile",
-        "option": {
-            "path": "./public/app.config.js",
-            "replace": "yy"
+        "hook": {
+            "before": [
+                {
+                    "plugin": "ReplaceFile",
+                    "option": {
+                    "path": "./build/version.js",
+                    "replace": "module.exports = { version: '__$tag__' }"
+                    }
+                }
+            ],
+            "after": [
+                {
+                "command": "npm run changelog:__$env__"
+                }
+            ]
         }
     }
-]
-```
-### plugin
-
-we support two plugins now:
-
-#### ReplaceVersionFile
-
-> replace(or overwrite) the version or tag name in your given files.
-
-option contains
-
-- `path` dist file path.
-- `match` needed if mode is regex, tell dogit where should replace.
-- `replace` the replaced data or funciton.
-
-if `repalce` is a string, this will directly replace whole file with this data.
-
-if `repalce` is a function, we will use the returned data as repalced data. this function can be sync or async
-
-```js
-replace(content, tag, env, version) {
-    //...
 }
 ```
-- `content` is the origin content from the file should be replaced.
-- `tag` is the tag name `xjzmy-test-v1.0.0`
-- `version` is the version `1.0.0`
-- `env` is env `test`
 
-for example we want to replace `./build/version.js` and `./public/app.config.js` with different replace format:
 
+# Process
+Then you can  begin to execute your own process with:
+```bash
+dogit flow
+```
+This command will read the configuration file  and starts the task. As you can see from the configuration file, `flow` represents the tasks what we need to execute, and contains two types of flows
+
+- Shell scripts
+- Plugin
+
+> Plugin processes can contain their own hook subprocesses, so they end up in a tree structure.
+
+## Shell scripts
+
+I believe everyone is familiar with shell scripts, like this:
+```js
+{
+  "command": "command"
+}
+```
+
+## Plugin
+
+> A plugin is essentially a built-in script that has the following features over a shell
+- Afferent configuration
+- Can execute own hook
+- Accepts the parameters of the upper flow
+- Parameters can be exposed to the subordinate flow
+
+
+And in a different format than the shell
 
 ```js
 {
-    "type": "plugin",
-    "value": "ReplaceVersionFile",
-    "option": [
-        {
-            "path": "./build/version.js",
-            "replace": "module.exports = { version: '__TAG__' }"
-        },
-        {
-            "path": "./public/app.config.js",
-            "replace": (content, tag) => {
-                return content.replace(/(version:\s+)'[\w\.\d-]+'/g, `$1'${tag}'`);
-            }
-        }
-    ]
+  "plugin": "AddTag", // Name of Plugin required
+  "option": {}, // Plugin parameters optional  
+  "hook": {}, // Hooks supported by the plugin (subflow) optional 
+  "when": params => {} // Prerequisites for executing the plugin optional 
+}
+```
+The currently supported built-in plugins are
+
+- [AddTag](./plugin/AddTag)  Git Tag
+- [ReplaceFile](./plugin/ReplaceFile) Replace file contents (such as writing a new Tag version number to some files)
+- [GitCommit](./plugin/GitCommit) Git Commit 
+
+
+> For specific hooks and options supported by the plugin, step into the plugin directory to view the documentation
+
+`when` parameter indicates the conditions under which the current flow executes
+
+```js
+{
+    "command": "npm run changelog:__$env__",
+    "when": params => {
+        return params.env !== 'dev'
+    }
 }
 ```
 
+This means that the Changelog generation task should only be performed without the tag in dev .
 
-#### AutoCommit
-
-> auto commit the unstash files that before action make.
-
-option contains
-
-- `message` the commit message
+# i18n
 
 
-if type is `cmd`, you shou fill:
-
-- `value` command script.
-
-the command can include follow parameters which will be replaced by real data
-
-- `__TAG__`  tagName `xjzmy-test-v1.0.0`
-- `__VERSION__`  version number `1.0.0`,
-- `__ENV__`  env `prod`
-
-# add tag
-
-when you want to add a tag(publish version) you should run
+The language of the tool itself can be switched with the following interactive command
 
 ```bash
-dogit tag
+dogit set
 ```
-this will lead you complete the info that you want to do this pierod.
