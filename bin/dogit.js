@@ -8,12 +8,12 @@ const ConfigGet = require('../action/config_get')
 const i18 = new I18();
 
 program
-  .version(require('../package.json').version, '-v, --version', 'output the current version')
+  .version(require('../package.json').version, '-v, --version', i18.__('action.version'))
   .usage(`[${i18.__('command')}] [${i18.__('parameter')}]`)
 
 program
   .command('flow')
-  .description('流程')
+  .description(i18.__('action.flow'))
   .option(`-n, --config <${i18.__('filepath')}>, ${i18.__('action.specify-config')}`)
   .action(({ config }) => {
       const flow = new Flow(config)
@@ -29,14 +29,14 @@ program
   })
 program
   .command('set')
-  .description('系统自定义设置')
+  .description(i18.__('action.set-config'))
   .action(() => {
       const configset = new ConfigSet()
       configset.start()
 })
 program
   .command('get')
-  .description('获取当前系统设置')
+  .description(i18.__('action.get-config'))
   .action(() => {
       const configset = new ConfigGet()
       configset.start()

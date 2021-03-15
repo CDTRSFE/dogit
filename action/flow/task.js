@@ -2,6 +2,8 @@ const { echo, replaceVar } = require('../../lib/helper');
 const plugin = require('../../plugin');
 const ora = require('ora');
 const { exec } = require('child_process');
+const I18 = require('../../lib/i18');
+const i18 = new I18();
 
 module.exports = class Task {
     constructor(task, params) {
@@ -12,15 +14,15 @@ module.exports = class Task {
     // 执行shell命令
     async excuteShell() {
         const command = replaceVar(this.task.command, this.params);
-        const spinner = ora(`开始执行钩子脚本 ${command}`).start();
+        const spinner = ora(i18.__('tip.excute-hook-start').replace(/__CMD__/, command)).start();
         return new Promise(resolve => {
             exec(command, (error, stdout, stderr) => {
                 if (error) {
-                    spinner.fail(`执行钩子脚本 ${command} 出错`);
+                    spinner.fail(i18.__('tip.excute-hook-error').replace(/__CMD__/, command));
                     echo(stderr, 'info')
                     process.exit();
                 }
-                spinner.succeed(`执行钩子脚本 ${command} 成功`);
+                spinner.succeed(i18.__('tip.excute-hook-success').replace(/__CMD__/, command));
                 resolve();
             });
         })
@@ -28,16 +30,16 @@ module.exports = class Task {
 
     // 执行插件
     async excutePlugin() {
-        echo(`开始执行插件 ${this.task.plugin}`, 'info')
+        echo(i18.__('tip.excute-plugin-start').replace(/__PLUGIN__/, this.task.plugin), 'info')
         try {
             const instance = await plugin.register(this.task, this.handler, this.params);
             // const spinner = ora(`开始执行插件 ${this.task.plugin}`).start();
             await instance.start();
             // spinner.succeed(`执行插件 ${this.task.plugin} 成功`);
-            echo(`执行插件 ${this.task.plugin} 成功`, 'success')
+            echo(i18.__('tip.excute-plugin-success').replace(/__PLUGIN__/, this.task.plugin), 'success')
         } catch (e) {
             // spinner.fail(`执行插件 ${this.task.plugin} 出错，请检查配置`);
-            echo(`执行插件 ${this.task.plugin} 出错，请检查配置`, 'error')
+            echo(i18.__('tip.excute-plugin-error').replace(/__PLUGIN__/, this.task.plugin), 'error')
             echo(e.message, 'info')
             process.exit();
         }

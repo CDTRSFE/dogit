@@ -102,7 +102,7 @@ module.exports = class AddTag {
         if (this.prevTag) {
             echo(`${i18.__('tip.last-tag').replace(/__ENV__/, this.params.env)} ${this.prevTag}`);
         } else {
-            echo(`${this.params.env} 尚未打过Tag`);
+            echo(i18.__('tip.no-tag').replace(/__ENV__/, this.params.env));
         }
     }
 

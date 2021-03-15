@@ -3,9 +3,13 @@
     "parameter": "parameter",
     "filepath": "filepath",
     "action": {
+        "version": "output the current version",
         "add-tag": "add a tag",
         "init-config": "init configuration file",
-        "specify-config": "manually specify configuration file"
+        "specify-config": "manually specify configuration file",
+        "flow": "flow",
+        "set-config": "system custom settings",
+        "get-config": "get current system settings"
     },
     "tip": {
         "write-success": "Successfully write configuration file.",
@@ -23,12 +27,21 @@
         "enter-tag-is": "The tag you want to set is",
         "confirm-exec": ". Are you sure you want to start execution?",
         "last-tag": "The last tag of the __ENV__ environment is",
+        "no-tag": "__ENV__ has not set tag",
         "excute-hook-start": "Start to execute the hook script '__CMD__'.",
         "excute-hook-error": "Error executing hook script '__CMD__'.",
         "excute-hook-success": "Successfully execute the hook script '__CMD__'.",
-        "excute-plugin-start": "Start to execute the hook plugin __PLUGIN__.",
-        "excute-plugin-error": "Error executing hook plugin __PLUGIN__, please check configuration.",
-        "excute-plugin-success": "Successfully execute the hook plugin __PLUGIN__.",
-        "the-end": "Congratulations on successfully setting the tag."
+        "excute-plugin-start": "Start to execute the plugin __PLUGIN__.",
+        "excute-plugin-error": "Error executing plugin __PLUGIN__, please check configuration.",
+        "excute-plugin-success": "Successfully execute the plugin __PLUGIN__.",
+        "the-end": "Congratulations on your successful completion of all processes.",
+        "get-config": "Getting system configuration..",
+        "get-config-success": "Successfully obtain system configuration.",
+        "init-config": "Initializing system configuration file..",
+        "init-config-success": "Successfully initialized the configuration file.",
+        "select-config": "Please select a configuration item.",
+        "select-config-lang": "Please select the desired language.",
+        "write-config-success": "Successfully write configuration file.",
+        "commit-success": "commit is successful, then you can push to the remote."
     }
 }

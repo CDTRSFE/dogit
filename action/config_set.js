@@ -8,17 +8,20 @@ const langChoise = [
     { title: '英文', value: 'EN' },
 ];
 const defaultConfig = {"systemConfig":{"lang":"ZH-CN"}};
+const I18 = require('../../lib/i18');
+const i18 = new I18();
+
 module.exports = class  Configset {
     async checkConfigFile() {
         fs.exists(path.resolve(__dirname, '../config/config.json'), (exists) => {
             // 如果config文件不存在 先初始化文件，再执行其他操作
             if(!exists) {
-                const spinner = ora('正在初始化系统配置文件..').start();
+                const spinner = ora(i18.__('tip.init-config')).start();
                 var fliePath = path.resolve(__dirname, '../config');
                 fs.mkdir(fliePath, (err)=> {
                     if(!err) {
                         fs.writeFileSync(path.resolve(process.cwd(), 'config/config.json'),JSON.stringify(defaultConfig));
-                        spinner.succeed('初始化配置文件成功')
+                        spinner.succeed(i18.__('tip.init-config-success'))
                         this.totalOperation();
                     }
                 });
@@ -39,7 +42,7 @@ module.exports = class  Configset {
             {
                 type: 'select',
                 name: 'config',
-                message: '请选择配置项',
+                message: i18.__('tip.select-config'),
                 choices: Object.keys(this.defaultConfigSet.systemConfig).map(item => {
                     return { title: item, value: item }
                 }),
@@ -56,7 +59,7 @@ module.exports = class  Configset {
             this.langResponse = await prompts([{
                 type: 'select',
                 name: 'config',
-                message: '请选择所需语言',
+                message: i18.__('tip.select-config-lang'),
                 choices: langChoise,
                 initial: 0
             }],
@@ -86,7 +89,7 @@ module.exports = class  Configset {
         await this.modifyLangSet();
         await this.changeConfig();
         this.writeConfig();
-        echo('写入配置文件成功', 'success');
+        echo(i18.__('tip.write-config-success'), 'success');
     }
     //启动
     async start() {

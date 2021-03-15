@@ -3,6 +3,8 @@ const plugin = require('../../plugin');
 const prompts = require('prompts');
 const ora = require('ora');
 const FlowLib = require('./flow');
+const I18 = require('../lib/i18');
+const i18 = new I18();
 
 module.exports = class Flow {
     constructor(configfile) {
@@ -14,7 +16,7 @@ module.exports = class Flow {
         const config = await readConfig(this.configfile);
         const flow = new FlowLib(config.flow)
         await flow.start()
-        echo('恭喜你成功完成全部流程', 'success')
+        echo(i18.__('the-end'), 'success')
     }
 
 }

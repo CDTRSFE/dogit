@@ -3,9 +3,13 @@
     "parameter": "参数",
     "filepath": "文件路径",
     "action": {
+        "version": "输出当前版本",
         "add-tag": "打Tag",
         "init-config": "初始化生成配置文件",
-        "specify-config": "手动指定配置路径"
+        "specify-config": "手动指定配置路径",
+        "flow": "流程",
+        "set-config": "系统自定义设置",
+        "get-config": "获取当前系统设置"
     },
     "tip": {
         "write-success": "写入配置文件成功",
@@ -23,12 +27,21 @@
         "enter-tag-is": "你即将打的Tag号为",
         "confirm-exec": " 确定无误开始执行？",
         "last-tag": "__ENV__ 环境的最近一次Tag为",
+        "no-tag": "__ENV__ 尚未打过Tag",
         "excute-hook-start": "开始执行钩子脚本 __CMD__",
         "excute-hook-error": "执行钩子脚本 __CMD__ 出错",
         "excute-hook-success": "执行钩子脚本 __CMD__ 成功",
-        "excute-plugin-start": "开始执行钩子插件 __PLUGIN__",
-        "excute-plugin-error": "执行钩子插件 __PLUGIN__ 出错，请检查配置",
-        "excute-plugin-success": "执行钩子插件 __PLUGIN__ 成功",
-        "the-end": "恭喜你成功打好Tag"
+        "excute-plugin-start": "开始执行插件 __PLUGIN__",
+        "excute-plugin-error": "执行插件 __PLUGIN__ 出错，请检查配置",
+        "excute-plugin-success": "执行插件 __PLUGIN__ 成功",
+        "the-end": "恭喜你成功完成全部流程",
+        "get-config": "正在获取系统配置..",
+        "get-config-success": "获取系统配置成功",
+        "init-config": "正在初始化系统配置文件..",
+        "init-config-success": "初始化配置文件成功",
+        "select-config": "请选择配置项",
+        "select-config-lang": "请选择所需语言",
+        "write-config-success": "写入配置文件成功",
+        "commit-success": "commit 成功，接下来你可以 push 到远端"
     }
 }
