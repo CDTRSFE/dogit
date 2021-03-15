@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { echo } = require('../lib/helper');
 const ora = require('ora');
-const I18 = require('../../lib/i18');
+const I18 = require('../lib/i18');
 const i18 = new I18();
 
 module.exports = class ConfigGet {

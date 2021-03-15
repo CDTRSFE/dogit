@@ -8,7 +8,7 @@ const langChoise = [
     { title: '英文', value: 'EN' },
 ];
 const defaultConfig = {"systemConfig":{"lang":"ZH-CN"}};
-const I18 = require('../../lib/i18');
+const I18 = require('../lib/i18');
 const i18 = new I18();
 
 module.exports = class  Configset {
