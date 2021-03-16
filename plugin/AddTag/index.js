@@ -120,7 +120,46 @@ module.exports = class AddTag {
             });
         })
     }
-
+    // 询问是否推送到远程分支
+    async getPushParams() {
+        const isPush = await prompts([
+            {
+                type: 'toggle',
+                name: 'value',
+                message: '是否将tag推送到远程仓库？',
+                initial: true,
+                active: 'yes',
+                inactive: 'no'
+            }
+        ]);
+        if (!isPush.value) {
+            return true;
+        }
+        this.pushParams = await prompts([
+            {
+                type: 'text',
+                name: 'env',
+                message: '请输入要push的环境',
+                initial: 0
+            }
+        ], {
+            onCancel() {
+                process.exit();
+            }
+        });
+        return new Promise(resolve => {
+            const command = `git push origin ${this.pushParams.env}  "${this.params.tag}"`
+            exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    echo(stderr, 'info')
+                    process.exit();
+                } else {
+                    resolve();
+                }
+            });
+        })
+    }
+    
     // 开始运行
     async start() {
         if (!await this.checkEnv()) {
@@ -130,5 +169,8 @@ module.exports = class AddTag {
         await this.handler(this.hook.before, this.params);
         await this.addTag();
         await this.handler(this.hook.after, this.params);
+    };
+    async push() {
+        await this.getPushParams();
     }
 }
