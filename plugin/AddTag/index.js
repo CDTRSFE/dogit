@@ -136,7 +136,7 @@ module.exports = class AddTag {
                 name: 'remote',
                 message: '请输入远程仓库名称',
                 initial: origins[0],
-                validate: text => origins.includes(text)
+                validate: text => !origins.includes(text) ? '无效的remote' : true
             }
         ], {
             onCancel() {
