@@ -1,0 +1,20 @@
+{
+  "lang": {
+      "default":"zh-CN", 
+      "scope":["zh-CN", "en"], 
+      "prompts": {
+          "name": "lang",
+          "type": "select",
+          "message": "请选择所需语言",
+          "choices": [{
+              "title": "中文",
+              "value": "zh-CN"
+          },
+          {
+              "title": "英文",
+              "value": "en"
+          }],
+          "initial": 0
+      }
+  }
+}

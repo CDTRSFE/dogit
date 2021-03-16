@@ -3,7 +3,7 @@ const path = require('path');
 const ora = require('ora');
 const prompts = require('prompts');
 const { echo,config } = require('../../lib/helper');
-const configOption = require('../../lib/config_option.json')
+const configOption = require('../../config/template.json')
 module.exports = class  ConfigSet {
     constructor(configPath) {
         this.configPath = configPath;

@@ -5,7 +5,7 @@
     "action": {
         "add-tag": "打Tag",
         "init-config": "初始化生成配置文件",
-        "specify-config": "手动指定配置路径",
+        "specify-config": "手动指定配置路径"
     },
     "tip": {
         "not-git-root": "当前目录不是Git目录，请切到Git根目录之后再操作",
