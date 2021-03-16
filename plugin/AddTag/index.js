@@ -3,7 +3,7 @@ const { exec, execSync } = require('child_process');
 const prompts = require('prompts');
 const ora = require('ora');
 const { echo } = require('../../lib/helper');
-const { isGitRoot, fetchRemote, guessNextTag, allTags } = require('../../lib/git');
+const { isGitRoot, fetchRemote, guessNextTag, allTags, allRemotes } = require('../../lib/git');
 
 const I18 = require('../../lib/i18');
 const i18 = new I18();
@@ -120,7 +120,45 @@ module.exports = class AddTag {
             });
         })
     }
-
+    // 询问是否推送到远程分支
+    async getPushParams(origins) {
+        const isPushParams = await prompts([
+            {
+                type: 'toggle',
+                name: 'isPush',
+                message: '是否将tag推送到远程仓库？',
+                initial: true,
+                active: 'yes',
+                inactive: 'no'
+            },
+            {
+                type: prev => prev ? 'text': null,
+                name: 'remote',
+                message: '请输入远程仓库名称',
+                initial: origins[0],
+                validate: text => origins.includes(text)
+            }
+        ], {
+            onCancel() {
+                process.exit();
+            }
+        });
+        if(!isPushParams.isPush) {
+            return;
+        }
+        return new Promise(resolve => {
+            const command = `git push ${isPushParams.remote} ${this.params.tag}`
+            exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    echo(stderr, 'info')
+                    process.exit();
+                } else {
+                    resolve();
+                }
+            });
+        })
+    }
+    
     // 开始运行
     async start() {
         if (!await this.checkEnv()) {
@@ -129,6 +167,8 @@ module.exports = class AddTag {
         await this.getParams();
         await this.handler(this.hook.before, this.params);
         await this.addTag();
+        const origins = await allRemotes();
+        await this.getPushParams(origins);
         await this.handler(this.hook.after, this.params);
-    }
+    };
 }
