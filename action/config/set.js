@@ -2,55 +2,15 @@ const fs = require('fs');
 const path = require('path');
 const ora = require('ora');
 const prompts = require('prompts');
-const { echo } = require('../../lib/helper');
-// 系统变量配置
-// default: 该配置项默认值，
-// scope：该配置项可选值 必须的。通过这个参数来判断json文件里面的配置是不是合法
-// prompts: 该配置项的类型等设置 
-
-const configOption = {
-    lang: {
-        default: 'zh-CN', 
-        scope:['zh-CN', 'en'], 
-        prompts: {
-            name: 'lang',
-            type: 'select',
-            message: '请选择所需语言',
-            choices: [{
-                title: '中文',
-                value: 'zh-CN'
-            },
-            {
-                title: '英文',
-                value: 'en'
-            }],
-            initial: 0
-        }
-    }
-}
+const { echo,config } = require('../../lib/helper');
+const configOption = require('../../lib/config_option.json')
 module.exports = class  ConfigSet {
     constructor(configPath) {
         this.configPath = configPath;
     }
     // 判断配置文件是否合法
     async dealConfigFile() {
-        this.configData = {};
-        // 文件存在
-        try {
-            const defaultConfigFile = require(this.configPath);
-            Object.keys(configOption).forEach(key => {
-                // scope 为function
-                const scope = configOption[key].scope;
-                const valid = typeof(scope) === 'function' ? scope(defaultConfigFile[key]) : scope.includes(defaultConfigFile[key]);
-                this.configData[key] = valid ? defaultConfigFile[key] : configOption[key].default;
-            })
-         }
-         // 文件不存在, 将默认的配置文件写入
-         catch(err){
-             Object.keys(configOption).map(key => {
-                 this.configData[key] = configOption[key].default
-             })
-         }
+        this.configData = config();
     }
     // 配置修改
     async modifyLangSet() {
