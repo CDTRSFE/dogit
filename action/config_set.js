@@ -3,44 +3,51 @@ const path = require('path');
 const ora = require('ora');
 const prompts = require('prompts');
 const { echo } = require('../lib/helper');
-const langChoise = [
-    { title: '中文', value: 'ZH-CN' },
-    { title: '英文', value: 'EN' },
-];
+const configOption = {
+    lang: {
+        name: 'config',
+        type: 'select',
+        message: '请选择所需语言',
+        choices: [{
+            title: '中文',
+            value: 'zh-CN'
+        },
+        {
+            title: '英文',
+            value: 'en'
+        }],
+        initial: 0
+    },
+    theme: {
+        name: 'config',
+        type: 'select',
+        message: '请选择所需颜色',
+        choices: [{
+            title: '黑色',
+            value: 'black'
+        },
+        {
+            title: '白色',
+            value: 'white'
+        }],
+        initial: 0
+    },
+}
 const defaultConfig = {"systemConfig":{"lang":"ZH-CN"}};
-module.exports = class  Configset {
-    async checkConfigFile() {
-        fs.exists(path.resolve(__dirname, '../config/config.json'), (exists) => {
-            // 如果config文件不存在 先初始化文件，再执行其他操作
-            if(!exists) {
-                const spinner = ora('正在初始化系统配置文件..').start();
-                var fliePath = path.resolve(__dirname, '../config');
-                fs.mkdir(fliePath, (err)=> {
-                    if(!err) {
-                        fs.writeFileSync(path.resolve(process.cwd(), 'config/config.json'),JSON.stringify(defaultConfig));
-                        spinner.succeed('初始化配置文件成功')
-                        this.totalOperation();
-                    }
-                });
-                return;
-            }
-            // config文件存在
-            this.totalOperation();
-        })
-    }
+module.exports = class  ConfigSet {
     // 先读取配置文件
     // defaultConfigSet 读取的文件字符串转换成json格式
     async readTemplate() {
         this.defaultConfigSet = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../config/config.json'), 'utf-8'));
     }
-    // 修改语言类型
+    // 配置修改
     async modifyLangSet() {
        this.config = await prompts([
             {
                 type: 'select',
                 name: 'config',
                 message: '请选择配置项',
-                choices: Object.keys(this.defaultConfigSet.systemConfig).map(item => {
+                choices: Object.keys(this.defaultConfigSet).map(item => {
                     return { title: item, value: item }
                 }),
                 initial: 0
@@ -51,26 +58,20 @@ module.exports = class  Configset {
                 }
             }
         )
-        // 设置语言进行的操作
-        if(this.config.config === 'lang') {
-            this.langResponse = await prompts([{
-                type: 'select',
-                name: 'config',
-                message: '请选择所需语言',
-                choices: langChoise,
-                initial: 0
-            }],
-            {
-                onCancel() {
-                    process.exit();
-                }
-            })
-        }
+        // configResponse 选择对应的配置的返回值,写文件的时候需要用到，所以挂在this上
+        this.configResponse = await prompts([
+            configOption[this.config.config]
+        ],
+        {
+            onCancel() {
+                process.exit();
+            }
+        })
     }
-    // 更改配置文件中的语言
+    // 更改配置文件中对应的配置项
     async changeConfig() {
-        if(this.langResponse) {
-            this.defaultConfigSet.systemConfig.lang = this.langResponse.config;
+        if(this.configResponse) {
+            this.defaultConfigSet[this.config.config] = this.configResponse.config;
         }
     }
 
@@ -80,16 +81,12 @@ module.exports = class  Configset {
         const data = JSON.stringify(this.defaultConfigSet,null,"\t")
         fs.writeFileSync(path.resolve(__dirname, '../config/config.json'),data);
     }
-    // 基本的操作方法
-    async totalOperation() {
+    //启动
+    async start() {
         await this.readTemplate();
         await this.modifyLangSet();
         await this.changeConfig();
         this.writeConfig();
         echo('写入配置文件成功', 'success');
-    }
-    //启动
-    async start() {
-        await this.checkConfigFile();
     }
 }
