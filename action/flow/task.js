@@ -35,7 +35,6 @@ module.exports = class Task {
             await instance.start();
             // spinner.succeed(`执行插件 ${this.task.plugin} 成功`);
             echo(`执行插件 ${this.task.plugin} 成功`, 'success')
-            await instance.push();
         } catch (e) {
             // spinner.fail(`执行插件 ${this.task.plugin} 出错，请检查配置`);
             echo(`执行插件 ${this.task.plugin} 出错，请检查配置`, 'error')
