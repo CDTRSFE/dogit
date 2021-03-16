@@ -8,11 +8,12 @@ module.exports = class ConfigGet {
     }
     // 读取配置
     readTemplate() {
-        const spinner = ora('正在获取系统配置..').start();
-        this.configList = fs.readFileSync(this.configPath, 'utf-8');
-        const type = JSON.parse(this.configList);
-        spinner.succeed('系统配置获取成功')
-        echo(JSON.stringify(type,null, '\t'),'success')
+        try {
+            let data = require(this.configPath);
+            echo(JSON.stringify(data,null, '\t'),'success')
+        } catch(e) {
+            echo('获取文件配置失败,请使用dogit config set 命令先生成配置文件','error');
+        }
     }
 
     start() {
