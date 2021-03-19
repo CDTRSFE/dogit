@@ -1,13 +1,16 @@
 
 const { echo } = require('../../lib/helper');
-const path = require('path')
+const path = require('path');
+const I18 = require('../../lib/i18');
+const i18 = new I18();
+
 module.exports = class Config{
     constructor(name) {
         this.name = name;
     }
     start() {
         if(!['ls','set'].includes(this.name)) {
-            echo('输入的命令不合法, 请通过 dogit config --help 来查看可用命令', 'error')
+            echo(i18.__('tip.enter-illegal'), 'error')
             process.exit();
         } 
         const defaultConfig =  require(`./${this.name}`)

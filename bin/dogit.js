@@ -11,7 +11,7 @@ program
 
 program
   .command('flow')
-  .description('流程')
+  .description(i18.__("action.flow"))
   .option(`-n, --config <${i18.__('filepath')}>, ${i18.__('action.specify-config')}`)
   .action(({ config }) => {
       const flow = new Flow(config)
@@ -29,8 +29,8 @@ program
 // 操作系统配置
 program
   .command('config [option]')
-  .option("-set", '更改系统配置')
-  .option("-ls", '获取系统配置')
+  .option("-set",i18.__("action.change-config"))
+  .option("-ls",i18.__("action.get-config"))
   .action((name) => {
     const config = new Config(name)
     config.start() 

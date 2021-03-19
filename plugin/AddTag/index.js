@@ -22,9 +22,9 @@ module.exports = class AddTag {
             return false;
         }
 
-        const spinner = ora('正在fetch远程仓库..').start();
+        const spinner = ora(i18.__("tip.fetch-origin")).start();
         await fetchRemote()
-        spinner.succeed('同步远程仓库成功');
+        spinner.succeed(i18.__("tip.fetch-success"));
 
         return true;
     }
@@ -35,7 +35,7 @@ module.exports = class AddTag {
             {
                 type: 'select',
                 name: 'env',
-                message: '请选择要打Tag的环境',
+                message: i18.__("action.select-env"),
                 choices: Object.keys(this.option.envs).map(item => {
                     return { title: item, value: item }
                 }),
@@ -55,14 +55,14 @@ module.exports = class AddTag {
             {
                 type: 'text',
                 name: 'version',
-                message: `请输入版本号（推荐 ${guessNextTag(this.prevVersion)}）`,
-                validate: value => !value ? `描述信息不能为空` : (this.envTags.includes(`${this.params.tagPrefix}${value}`) ? '该版本号已存在' : true)
+                message: `${i18.__('action.enter-version')}(${i18.__('tip.recommend')}${guessNextTag(this.prevVersion)}）`,
+                validate: value => !value ? `${i18.__("tip.msg-cannot-empty")}` : (this.envTags.includes(`${this.params.tagPrefix}${value}`) ? i18.__("tip.version-existed") : true)
             },
             {
                 type: 'text',
                 name: 'message',
-                message: '请输入Tag描述信息',
-                validate: value => !value ? `描述信息不能为空` : true
+                message: i18.__("action.enter-tagMsg"),
+                validate: value => !value ? i18.__("tip.msg-cannot-empty") : true
             }
         ], {
             onCancel() {
@@ -80,7 +80,7 @@ module.exports = class AddTag {
             {
                 type: 'toggle',
                 name: 'value',
-                message: `你即将打的Tag号为 ${this.params.tag} 确定无误开始执行？`,
+                message: `${i18.__("tip.enter-tag-is")} ${this.params.tag} ${i18.__("tip.confirm-exec")}`,
                 initial: true,
                 active: 'yes',
                 inactive: 'no'
@@ -100,9 +100,9 @@ module.exports = class AddTag {
         this.prevTag = this.envTags[0] || '';
         this.prevVersion = this.prevTag.split(this.params.tagPrefix)[1];
         if (this.prevTag) {
-            echo(`${this.params.env} 环境的最近一次Tag为 ${this.prevTag}`);
+            echo(`${i18.__('tip.last-tag').replace(/__ENV__/, this.params.env)} ${this.prevTag}`);
         } else {
-            echo(`${this.params.env} 尚未打过Tag`);
+            echo(i18.__('tip.no-tag').replace(/__ENV__/, this.params.env));
         }
     }
 
@@ -126,7 +126,7 @@ module.exports = class AddTag {
             {
                 type: 'toggle',
                 name: 'isPush',
-                message: '是否将tag推送到远程仓库？',
+                message: i18.__('tip.push-tag'),
                 initial: true,
                 active: 'yes',
                 inactive: 'no'
@@ -134,9 +134,9 @@ module.exports = class AddTag {
             {
                 type: prev => prev ? 'text': null,
                 name: 'remote',
-                message: '请输入远程仓库名称',
+                message:i18.__("action.enter-repository"),
                 initial: origins[0],
-                validate: text => !origins.includes(text) ? '无效的remote' : true
+                validate: text => !origins.includes(text) ? i18.__("tip.invalid-remote") : true
             }
         ], {
             onCancel() {

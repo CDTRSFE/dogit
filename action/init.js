@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const { echo } = require('../lib/helper');
+const I18 = require('../lib/i18');
+const i18 = new I18();
 
 module.exports = class Init {
     // 读取配置
@@ -16,6 +18,6 @@ module.exports = class Init {
     start() {
         this.readTemplate();
         this.writeConfig();
-        echo('写入配置文件成功', 'success');
+        echo(i18.__("tip.success-config"), 'success');
     }
 }
