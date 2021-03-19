@@ -14,6 +14,10 @@ module.exports = class Flow {
     // 开始
     async start() {
         const config = await readConfig(this.configfile);
+        if (!config || !config.flow) {
+            echo('配置文件不存在或格式错误，尝试执行 dogit init 初始化配置文件', 'error');
+            return;
+        }
         const flow = new FlowLib(config.flow)
         await flow.start()
         echo(i18.__("tip.success-process"),'success')
