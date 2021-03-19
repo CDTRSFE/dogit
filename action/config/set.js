@@ -4,6 +4,8 @@ const ora = require('ora');
 const prompts = require('prompts');
 const { echo,config } = require('../../lib/helper');
 const configOption = require('../../config/template.json')
+const I18 = require('../../lib/i18');
+const i18 = new I18();
 module.exports = class  ConfigSet {
     constructor(configPath) {
         this.configPath = configPath;
@@ -18,7 +20,7 @@ module.exports = class  ConfigSet {
             {
                 type: 'select',
                 name: 'config',
-                message: '请选择配置项',
+                message: i18.__("action.select-config"),
                 choices: Object.keys(this.configData).map(item => {
                     return { title: item, value: item }
                 }),
@@ -52,7 +54,7 @@ module.exports = class  ConfigSet {
     writeConfig() {
         const data = JSON.stringify(this.configData,null,"\t")
         fs.writeFileSync(this.configPath,data);
-        echo('写入配置文件成功', 'success');
+        echo(i18.__("action.success-config"), 'success');
     }
     //启动
     async start() {

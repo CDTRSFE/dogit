@@ -5,10 +5,40 @@
     "action": {
         "add-tag": "打Tag",
         "init-config": "初始化生成配置文件",
-        "specify-config": "手动指定配置路径"
+        "specify-config": "手动指定配置路径",
+        "select-config": "请选择配置项",
+        "flow": "流程",
+        "change-config": "更改系统配置",
+        "get-config": "获取系统配置",
+        "select-env": "请选择要打Tag的环境",
+        "enter-version": "请输入版本号",
+        "enter-tagMsg": "请输入Tag描述信息",
+        "enter-repository": "请输入远程仓库名称"
     },
     "tip": {
+        "enter-illegal": "输入的命令不合法, 请通过 dogit config --help 来查看可用命令",
         "not-git-root": "当前目录不是Git目录，请切到Git根目录之后再操作",
-        "lost-config": "配置文件未找到，请使用 dogit init 初始化一个配置文件或者用 -n 参数手动指定一个配置文件"
+        "lost-config": "配置文件未找到，请使用 dogit init 初始化一个配置文件或者用 -n 参数手动指定一个配置文件",
+        "fail-config": "获取文件配置失败,请使用dogit config set 命令先生成配置文件",
+        "success-config": "写入配置文件成功",
+        "success-process": "恭喜你成功完成全部流程",
+        "start-script": "开始执行钩子脚本 __CMD__",
+        "erro-script": "执行钩子脚本__CMD__出错",
+        "success-script": "执行钩子脚本 __CMD__ 成功",
+        "start-plugin": "开始执行插件 __PLUGIN__",
+        "success-plugin": "执行插件 __PLUGIN__ 成功",
+        "error-plugin": "执行插件 __PLUGIN__ 出错，请检查配置",
+        "fetch-origin": "正在fetch远程仓库...",
+        "fetch-success": "同步远程仓库成功",
+        "recommend": "推荐",
+        "msg-cannot-empty": "描述信息不能为空",
+        "version-existed": "该版本号已存在",
+        "enter-tag-is": "你即将打的Tag号为",
+        "confirm-exec": "。确定无误开始执行？",
+        "last-tag": "__ENV__ 环境的最近一次Tag为",
+        "no-tag": "__ENV__ 尚未打过Tag",
+        "push-tag": "是否将tag推送到远程仓库？",
+        "invalid-remote": "无效的remote",
+        "command-success": "commit 成功，接下来你可以 push 到远端"
     }
 }

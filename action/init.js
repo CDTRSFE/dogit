@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const { echo } = require('../lib/helper');
-const prompts = require('prompts');
+const I18 = require('../lib/i18');
+const i18 = new I18();
 module.exports = class Init {
     constructor() {
         this.configFilePath = path.resolve(process.cwd(), 'dogit.config.js');
@@ -41,5 +42,6 @@ module.exports = class Init {
     start() {
         this.readTemplate();
         this.writeConfig();
+        echo(i18.__("tip.success-config"), 'success');
     }
 }

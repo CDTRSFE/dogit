@@ -1,5 +1,7 @@
 const { exec, execSync } = require('child_process');
 const { echo, replaceVar } = require('../../lib/helper');
+const I18 = require('../../lib/i18');
+const i18 = new I18();
 
 module.exports = class AutoCommit {
     constructor({ option,hook }, handler, params) {
@@ -27,7 +29,7 @@ module.exports = class AutoCommit {
         await this.handler(this.hook.after, {
             message: message
         });
-        echo('commit 成功，接下来你可以 push 到远端', 'info');
+        echo(i18.__("tip.command-success"), 'info');
         return true;
     }
 }

@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const { echo,config } = require('../../lib/helper');
 const ora = require('ora');
+const I18 = require('../../lib/i18');
+const i18 = new I18();
 module.exports = class ConfigGet {
     constructor(configPath) {
         this.configPath = configPath
@@ -12,7 +14,7 @@ module.exports = class ConfigGet {
             let data = config();
             echo(JSON.stringify(data,null, '\t'),'success')
         } catch(e) {
-            echo('获取文件配置失败,请使用dogit config set 命令先生成配置文件','error');
+            echo(i18.__("tip.fail-config"),'error');
         }
     }
 

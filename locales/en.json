@@ -5,10 +5,40 @@
     "action": {
         "add-tag": "add a tag",
         "init-config": "init configuration file",
-        "specify-config": "manually specify configuration file"
+        "specify-config": "manually specify configuration file",
+        "select-config": "please select configuration item",
+        "flow": "flow",
+        "change-config": "change-config",
+        "get-config": "get system configuration",
+        "select-env": "please select the environment where you want to set the Tag",
+        "enter-version": "please enter the version number",
+        "enter-tagMsg": "please enter Tag description information",
+        "enter-repository": "Please enter the name of remote repository"
     },
     "tip": {
+        "enter-illegal": "the command you entered is illegal. please check the available commands through dogit config -- help",
         "not-git-root": "current folder is not git root, please run the command after switch to a git folder.",
-        "lost-config": "can't find the config file, please use dogit init to generate a config fileor use -n parameter to specify a config file."
+        "lost-config": "can't find the config file, please use dogit init to generate a config fileor use -n parameter to specify a config file.",
+        "fail-config": "failed to obtain the file configuration. please use dogit config set command to generate the configuration file",
+        "success-config": "the configuration file was written successfully",
+        "success-process": "congratulations on your successful completion of the whole process",
+        "start-script": "start to execute the hook script __CMD__",
+        "erro-script": "error executing hook script __CMD__",
+        "success-script": "successfully execute the hook script __CMD__",
+        "start-plugin": "start to execute the plugin __PLUGIN__",
+        "success-plugin": "successfully execute the plugin __PLUGIN__",
+        "error-plugin": "error executing plugin __PLUGIN__, please check configuration",
+        "fetch-origin": "fetch remote origin...",
+        "fetch-success": "successfully synchronized the remote origin",
+        "recommend": "recommended",
+        "msg-cannot-empty": "the description information cannot be empty",
+        "version-existed": "this version number already exists",
+        "enter-tag-is": "the tag you want to set is",
+        "confirm-exec": ". Are you sure you want to start execution?",
+        "last-tag": "The last tag of the __ENV__ environment is",
+        "no-tag": "__ENV__ has not set tag",
+        "push-tag": "Do you want to push your tag to remote repository?",
+        "invalid-remote": "Invalid remote",
+        "command-success": "Command commit is successful, and then you can push to the remote origin"
     }
 }
