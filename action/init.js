@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const prompts = require('prompts');
 const { echo } = require('../lib/helper');
 const I18 = require('../lib/i18');
 const i18 = new I18();
@@ -23,7 +24,7 @@ module.exports = class Init {
                 {
                     type: 'toggle',
                     name: 'isWrite',
-                    message: '配置文件已存在，是否要覆盖？',
+                    message: i18.__('tip.config-existed'),
                     initial: false,
                     active: 'yes',
                     inactive: 'no'
@@ -37,11 +38,10 @@ module.exports = class Init {
             if (!response.isWrite) return
         }
         fs.writeFileSync(this.configFilePath, this.template);
-        echo('配置文件写入成功','success');
+        echo(i18.__("tip.success-config"), 'success');
     }
     start() {
         this.readTemplate();
         this.writeConfig();
-        echo(i18.__("tip.success-config"), 'success');
     }
 }

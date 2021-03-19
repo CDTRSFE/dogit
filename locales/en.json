@@ -12,7 +12,7 @@
         "get-config": "get system configuration",
         "select-env": "please select the environment where you want to set the Tag",
         "enter-version": "please enter the version number",
-        "enter-tagMsg": "please enter Tag description information",
+        "enter-tagMsg": "please enter tag description information",
         "enter-repository": "Please enter the name of remote repository"
     },
     "tip": {
@@ -39,6 +39,7 @@
         "no-tag": "__ENV__ has not set tag",
         "push-tag": "Do you want to push your tag to remote repository?",
         "invalid-remote": "Invalid remote",
-        "command-success": "Command commit is successful, and then you can push to the remote origin"
+        "command-success": "Command commit is successful, and then you can push to the remote origin",
+        "config-existed": "the config file has exsited, do you want to cover?"
     }
 }

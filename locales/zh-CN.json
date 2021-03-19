@@ -39,6 +39,7 @@
         "no-tag": "__ENV__ 尚未打过Tag",
         "push-tag": "是否将tag推送到远程仓库？",
         "invalid-remote": "无效的remote",
-        "command-success": "commit 成功，接下来你可以 push 到远端"
+        "command-success": "commit 成功，接下来你可以 push 到远端",
+        "config-existed": "配置文件已存在，是否要覆盖？"
     }
 }

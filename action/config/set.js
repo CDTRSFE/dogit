@@ -54,7 +54,7 @@ module.exports = class  ConfigSet {
     writeConfig() {
         const data = JSON.stringify(this.configData,null,"\t")
         fs.writeFileSync(this.configPath,data);
-        echo(i18.__("action.success-config"), 'success');
+        echo(i18.__("tip.success-config"), 'success');
     }
     //启动
     async start() {
