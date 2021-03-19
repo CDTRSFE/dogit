@@ -55,7 +55,7 @@ module.exports = class AddTag {
             {
                 type: 'text',
                 name: 'version',
-                message: `${i18.__('action.enter-version')}(${i18.__('tip.recommend')}${guessNextTag(this.prevVersion)}）`,
+                message: `${i18.__('action.enter-version')}(${i18.__('tip.recommend')} ${guessNextTag(this.prevVersion)}）`,
                 validate: value => !value ? `${i18.__("tip.msg-cannot-empty")}` : (this.envTags.includes(`${this.params.tagPrefix}${value}`) ? i18.__("tip.version-existed") : true)
             },
             {
