@@ -4,7 +4,6 @@ const prompts = require('prompts');
 const ora = require('ora');
 const { echo } = require('../../lib/helper');
 const { isGitRoot, fetchRemote, guessNextTag, allTags, allRemotes } = require('../../lib/git');
-
 const I18 = require('../../lib/i18');
 const i18 = new I18();
 
@@ -104,6 +103,7 @@ module.exports = class AddTag {
         } else {
             echo(i18.__('tip.no-tag').replace(/__ENV__/, this.params.env));
         }
+        
     }
 
     // 打Tag

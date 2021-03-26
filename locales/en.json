@@ -13,7 +13,9 @@
         "select-env": "please select the environment where you want to set the Tag",
         "enter-version": "please enter the version number",
         "enter-tagMsg": "please enter tag description information",
-        "enter-repository": "Please enter the name of remote repository"
+        "enter-repository": "Please enter the name of remote repository",
+        "enter-remotebranch": "Please enter the name of remote branch"
+        
     },
     "tip": {
         "enter-illegal": "the command you entered is illegal. please check the available commands through dogit config -- help",
@@ -38,6 +40,8 @@
         "last-tag": "The last tag of the __ENV__ environment is",
         "no-tag": "__ENV__ has not set tag",
         "push-tag": "Do you want to push your tag to remote repository?",
+        "push-origin":"Do you want to push your commit to remote repository?",
+        "push-confirm":"You will push from local branch __LOCALBRANCH__ to remote branch __REMOTE__ , are you sure?",
         "invalid-remote": "Invalid remote",
         "command-success": "Command commit is successful, and then you can push to the remote origin",
         "config-existed": "the config file has exsited, do you want to cover?"

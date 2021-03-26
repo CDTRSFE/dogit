@@ -13,7 +13,8 @@
         "select-env": "请选择要打Tag的环境",
         "enter-version": "请输入版本号",
         "enter-tagMsg": "请输入Tag描述信息",
-        "enter-repository": "请输入远程仓库名称"
+        "enter-repository": "请输入远程仓库名称",
+        "enter-remotebranch": "请输入远程分支名称"
     },
     "tip": {
         "enter-illegal": "输入的命令不合法, 请通过 dogit config --help 来查看可用命令",
@@ -29,6 +30,7 @@
         "success-plugin": "执行插件 __PLUGIN__ 成功",
         "error-plugin": "执行插件 __PLUGIN__ 出错，请检查配置",
         "fetch-origin": "正在fetch远程仓库...",
+        
         "fetch-success": "同步远程仓库成功",
         "recommend": "推荐",
         "msg-cannot-empty": "描述信息不能为空",
@@ -38,6 +40,8 @@
         "last-tag": "__ENV__ 环境的最近一次Tag为",
         "no-tag": "__ENV__ 尚未打过Tag",
         "push-tag": "是否将tag推送到远程仓库？",
+        "push-origin":"是否将commit推送到远程分支？",
+        "push-confirm":"将从本地__LOCALBRANCH__分支推送到远程__REMOTE__分支，确定？",
         "invalid-remote": "无效的remote",
         "command-success": "commit 成功，接下来你可以 push 到远端",
         "config-existed": "配置文件已存在，是否要覆盖？"
