@@ -1,13 +1,14 @@
 const ReplaceFile = require('./ReplaceFile');
 const GitCommit = require('./GitCommit');
 const AddTag = require('./AddTag');
-
+const GitPush = require('./GitPush')
 module.exports = {
     async register(task, handler, params) {
         const PluginClass = {
             ReplaceFile,
             GitCommit,
-            AddTag
+            AddTag,
+            GitPush
         }[task.plugin];
     
         if (!PluginClass) return null;
