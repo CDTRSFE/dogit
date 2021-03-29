@@ -1,5 +1,5 @@
 const prompts = require('prompts');
-const { isGitRoot, fetchRemote, allRemotes, getCurrentbranch } = require('../../lib/git');
+const { isGitRoot, fetchRemote, allRemotes, getCurrentbranch,getBranchDifferent } = require('../../lib/git');
 const { exec, execSync } = require('child_process');
 const { echo } = require('../../lib/helper');
 const ora = require('ora');
@@ -12,50 +12,26 @@ module.exports = class GitPushOrigin {
         this.handler = handler;
     }
     // 询问是否推送到远程分支
-    async getPushOrigin() {
+    async getPushOrigin(origins) {
         const currentBranch = await getCurrentbranch();
         const isPush = await prompts([
             {
-                type: 'toggle',
-                name: 'isPush',
-                message: i18.__('tip.push-origin'),
-                initial: true,
-                active: 'yes',
-                inactive: 'no'
-            },
-            {
-                type: prev => prev ? 'text' : null,
-                name: 'remotebranch',
-                message: i18.__("action.enter-remotebranch"),
-                initial: currentBranch
+                type:  'text' ,
+                name: 'remote',
+                message: `${i18.__("tip.branch")}${currentBranch},${i18.__("action.enter-repository")}`,
+                initial: origins[0],
+                validate: text => !origins.includes(text) ? i18.__("tip.invalid-remote") : true
             }
         ], {
             onCancel() {
                 process.exit();
             }
-        });
-        if (!isPush.isPush) {
-            return;
-        }
-        const confirm = await prompts([
-            {
-                type: 'toggle',
-                name: 'confirm',
-                message: i18.__('tip.push-confirm').replace(/__LOCALBRANCH__/,currentBranch).replace(/__REMOTE__/,isPush.remotebranch),
-                initial: true,
-                active: 'yes',
-                inactive: 'no'
-            }
-        ], {
-            onCancel() {
-                process.exit();
-            }
-        });
-        if(!confirm.confirm){
-            return;
-        }
+        })
+        console.log(currentBranch,isPush.remote)
+        const difference = await getBranchDifferent(currentBranch,isPush.remote);
+        console.log('检测到本地有N个提交未同步到远程：',difference)
         return new Promise(resolve => {
-            const command = `git push origin ${isPush.remotebranch}`
+            const command = `git push ${isPush.remote}`
             exec(command, (error, stdout, stderr) => {
                 if (error) {
                     echo(stderr, 'info')
@@ -72,6 +48,11 @@ module.exports = class GitPushOrigin {
             echo(i18.__('tip.not-git-root'), 'error');
             return false;
         }
+
+        const spinner = ora(i18.__("tip.fetch-origin")).start();
+        await fetchRemote()
+        spinner.succeed(i18.__("tip.fetch-success"));
+
         return true;
     }
     // 开始运行
@@ -79,7 +60,8 @@ module.exports = class GitPushOrigin {
         if (!await this.checkEnv()) {
             process.exit();
         }
-        await this.getPushOrigin();
+        const origins = await allRemotes();
+        await this.getPushOrigin(origins);
         await this.handler(this.hook.after, this.params);
     };
 
