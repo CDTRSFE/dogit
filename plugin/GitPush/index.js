@@ -27,20 +27,19 @@ module.exports = class GitPushOrigin {
                 process.exit();
             }
         })
-        console.log(currentBranch,isPush.remote)
-        const difference = await getBranchDifferent(currentBranch,isPush.remote);
+        const difference = await getBranchDifferent(currentBranch);
         console.log('检测到本地有N个提交未同步到远程：',difference)
-        return new Promise(resolve => {
-            const command = `git push ${isPush.remote}`
-            exec(command, (error, stdout, stderr) => {
-                if (error) {
-                    echo(stderr, 'info')
-                    process.exit();
-                } else {
-                    resolve();
-                }
-            });
-        })
+        // return new Promise(resolve => {
+        //     const command = `git push ${isPush.remote}`
+        //     exec(command, (error, stdout, stderr) => {
+        //         if (error) {
+        //             echo(stderr, 'info')
+        //             process.exit();
+        //         } else {
+        //             resolve();
+        //         }
+        //     });
+        // })
     }
     // 验证环境
     async checkEnv() {
