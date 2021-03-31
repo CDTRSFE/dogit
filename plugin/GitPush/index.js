@@ -28,7 +28,7 @@ module.exports = class GitPushOrigin {
             }
         })
         const difference = await getBranchDifferent(currentBranch);
-        console.log('检测到本地有N个提交未同步到远程：',difference)
+        console.log(`检测到本地有${difference.num}个提交未同步到远程：/n`,difference.diff)
         // return new Promise(resolve => {
         //     const command = `git push ${isPush.remote}`
         //     exec(command, (error, stdout, stderr) => {
