@@ -48,7 +48,12 @@ module.exports = class GitPushOrigin {
                 process.exit();
             }
             const command = `git push ${isPush.remote} ${currentBranch}`
-            return execSync(command);
+            return execSync(command,(error, stdout, stderr) => {
+                if (error) {
+                    echo(stderr, 'info')
+                    process.exit();
+                }
+            });
         } else {
             echo('检测到本地没有提交未同步到远程','tip')
             return
