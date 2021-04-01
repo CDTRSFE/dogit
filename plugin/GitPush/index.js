@@ -1,5 +1,5 @@
 const prompts = require('prompts');
-const { isGitRoot, fetchRemote, allRemotes, getCurrentbranch,getBranchDifferent } = require('../../lib/git');
+const { isGitRoot, fetchRemote, allRemotes, getCurrentbranch, getBranchDifferent } = require('../../lib/git');
 const { exec, execSync } = require('child_process');
 const { echo } = require('../../lib/helper');
 const ora = require('ora');
@@ -16,7 +16,7 @@ module.exports = class GitPushOrigin {
         const currentBranch = await getCurrentbranch();
         const isPush = await prompts([
             {
-                type:  'text' ,
+                type: 'text',
                 name: 'remote',
                 message: `${i18.__("tip.branch")}${currentBranch},${i18.__("action.enter-repository")}`,
                 initial: origins[0],
@@ -28,18 +28,32 @@ module.exports = class GitPushOrigin {
             }
         })
         const difference = await getBranchDifferent(currentBranch);
-        console.log(`检测到本地有${difference.num}个提交未同步到远程：/n`,difference.diff)
-        // return new Promise(resolve => {
-        //     const command = `git push ${isPush.remote}`
-        //     exec(command, (error, stdout, stderr) => {
-        //         if (error) {
-        //             echo(stderr, 'info')
-        //             process.exit();
-        //         } else {
-        //             resolve();
-        //         }
-        //     });
-        // })
+        if (difference.num > 0) {
+            echo(`检测到本地有${difference.num}个提交未同步到远程：\n${difference.diff}`,'tip')
+            const confirm = await prompts([
+                {
+                    type: 'toggle',
+                    name: 'value',
+                    message: '确定推送到远端？',
+                    initial: true,
+                    active: 'yes',
+                    inactive: 'no'
+                }
+            ], {
+                onCancel() {
+                    process.exit();
+                }
+            })
+            if (!confirm.value) {
+                process.exit();
+            }
+            const command = `git push ${isPush.remote} ${currentBranch}`
+            return execSync(command);
+        } else {
+            echo('检测到本地没有提交未同步到远程','tip')
+            return
+        }
+
     }
     // 验证环境
     async checkEnv() {
@@ -61,7 +75,9 @@ module.exports = class GitPushOrigin {
         }
         const origins = await allRemotes();
         await this.getPushOrigin(origins);
-        await this.handler(this.hook.after, this.params);
+        echo(i18.__("tip.push-success"), 'info');
+        return true;
+
     };
 
 }

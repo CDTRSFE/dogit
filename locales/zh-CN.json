@@ -40,6 +40,7 @@
         "push-tag": "是否将tag推送到远程仓库？",
         "invalid-remote": "无效的remote",
         "command-success": "commit 成功，接下来你可以 push 到远端",
+        "push-success": "push成功!",
         "config-existed": "配置文件已存在，是否要覆盖？",
         "branch":"当前位于分支"
     }

@@ -42,6 +42,7 @@
         "push-tag": "Do you want to push your tag to remote repository?",
         "invalid-remote": "Invalid remote",
         "command-success": "Command commit is successful, and then you can push to the remote origin",
+        "push-success": "Command push is successful!",
         "config-existed": "the config file has exsited, do you want to cover?",
         "branch":"Currently in  branch"
         
