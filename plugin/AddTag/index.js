@@ -35,8 +35,11 @@ module.exports = class AddTag {
                 type: 'select',
                 name: 'env',
                 message: i18.__("action.select-env"),
-                choices: Object.keys(this.option.envs).map(item => {
-                    return { title: item, value: item }
+                choices: Object.keys(this.option.envs).map(key => {
+                    return {
+                        title: `${key}${this.option.envs[key].name ? `（${this.option.envs[key].name}）` : ''}`,
+                        value: key
+                    }
                 }),
                 initial: 0
             }
